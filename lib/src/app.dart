@@ -1,8 +1,10 @@
+import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -18,12 +20,21 @@ class MyApp extends StatelessWidget {
 
   final SettingsController settingsController;
 
+  final storage = const FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
+
+    checkToken() async {
+      String? token = await storage.read(key: 'token');
+      print('token app:  $token');
+      return token != null ? true : false;
+    }
+
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -72,14 +83,16 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case Home.routeName:
-                    return Home();
+                    return const Home();
+                  case Account.routeName:
+                    return const Account();
                   case Login.routeName:
                     return const Login();
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
                   case SampleItemListView.routeName:
                   default:
-                    return const SampleItemListView();
+                    return const Login();
                 }
               },
             );

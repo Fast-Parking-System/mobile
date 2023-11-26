@@ -19,6 +19,9 @@ class _LoginState extends State<Login> {
   TextEditingController userIdController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  // Create storage
+  final storage = const FlutterSecureStorage();
+
   Future<void> sendLoginRequest() async {
     var url = Uri.parse(ApiConstants.url + ApiConstants.login);
     var response = await http.post(url,
@@ -30,7 +33,11 @@ class _LoginState extends State<Login> {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body.toString());
-      print(data);
+      // print(data);
+
+      // Save auth/login data to storage
+      await storage.write(key: 'token', value: data['data']['token']);
+
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Login Success!"),
       ));
@@ -65,27 +72,37 @@ class _LoginState extends State<Login> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormField(
-                  controller: userIdController,
-                  // onChanged: (val){
-                  //   _updateUserId(val);
-                  // },
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person_outline_outlined),
-                      labelText: 'USER ID',
-                      hintText: 'User ID',
-                      border: OutlineInputBorder()),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20.0),
+                  child: TextFormField(
+                    controller: userIdController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person_outline_outlined),
+                        prefixIconColor: Colors.white,
+                        fillColor: Colors.white,
+                        labelText: 'USER ID',
+                        labelStyle: TextStyle(color: Colors.white),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 2))),
+                  ),
                 ),
-                TextFormField(
-                  controller: passwordController,
-                  // onChanged: (val){
-                  //   _updatePassword(val);
-                  // },
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.fingerprint),
-                      labelText: 'PASSWORD',
-                      hintText: 'Password',
-                      border: OutlineInputBorder()),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20.0),
+                  child: TextFormField(
+                    controller: passwordController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.fingerprint),
+                        prefixIconColor: Colors.white,
+                        fillColor: Colors.white,
+                        labelText: 'PASSWORD',
+                        labelStyle: TextStyle(color: Colors.white),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 2))),
+                  ),
                 ),
               ],
             ),
