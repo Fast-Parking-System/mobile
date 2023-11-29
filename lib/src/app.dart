@@ -1,6 +1,8 @@
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
+import 'package:fast_parking_system/src/screens/profile.dart';
+import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -86,6 +88,10 @@ class MyApp extends StatelessWidget {
                     return const Home();
                   case Account.routeName:
                     return const Account();
+                  case Wallet.routeName:
+                    return const Wallet();
+                  case Profile.routeName:
+                    return const Profile();
                   case Login.routeName:
                     return const Login();
                   case SampleItemDetailsView.routeName:

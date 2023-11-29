@@ -4,29 +4,28 @@ import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/models/pokemon_model.dart';
 import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
+import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
-import 'package:fast_parking_system/src/screens/profile.dart';
-import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class Wallet extends StatefulWidget {
+  const Wallet({Key? key}) : super(key: key);
 
-  static const routeName = '/home';
+  static const routeName = '/wallet';
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Wallet> {
   TextEditingController searchController = TextEditingController();
   late Pokemon? _pokemon = null;
   late Locations? _locations = null;
   final storage = const FlutterSecureStorage();
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
@@ -69,9 +68,6 @@ class _HomeState extends State<Home> {
       case 2:
         Navigator.restorablePushNamed(context, Wallet.routeName);
         break;
-      case 3:
-        Navigator.restorablePushNamed(context, Profile.routeName);
-        break;
       default:
     }
   }
@@ -103,7 +99,7 @@ class _HomeState extends State<Home> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/home.png')),
-                label: 'Home'),
+                label: 'Account'),
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/account.png')),
                 label: 'Add Account'),
@@ -146,81 +142,13 @@ class _HomeState extends State<Home> {
                   decoration: const BoxDecoration(
                       color: Color.fromRGBO(217, 217, 217, 1),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Column(
+                  child: const Column(
                     children: [
-                      // TextFormField(
-                      //   controller: searchController,
-                      //   textAlign: TextAlign.center,
-                      //   decoration: const InputDecoration(
-                      //       hintText: 'Search',
-                      //       hintStyle: TextStyle(color: Colors.black),
-                      //       filled: true,
-                      //       fillColor: Colors.white,
-                      //       enabledBorder: OutlineInputBorder(
-                      //           borderSide: BorderSide(color: Colors.white))),
-                      // ),
-                      const Text(
-                        "Hi Admin!",
+                      Text(
+                        "Wallet",
                         style: TextStyle(
                             fontSize: 50, fontWeight: FontWeight.w500),
                       ), //<------------
-                      Expanded(
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 5,
-                          ),
-                          itemCount: _locations!.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Container(
-                                child: InkWell(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      // border: Border.all(color: Colors.black),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/location.png',
-                                          fit: BoxFit.cover,
-                                          height: 60,
-                                          width: 60,
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Container(
-                                          decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text(
-                                            _locations!.data[index].name,
-                                            style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.normal),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
                     ],
                   ),
                 ),

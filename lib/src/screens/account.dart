@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import 'package:fast_parking_system/src/models/locations_model.dart';
-import 'package:fast_parking_system/src/models/pokemon_model.dart';
-import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
+import 'package:fast_parking_system/src/constants.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
-import 'package:fast_parking_system/src/services/api_service.dart';
+import 'package:fast_parking_system/src/screens/profile.dart';
+import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -20,37 +19,46 @@ class Account extends StatefulWidget {
 }
 
 class _HomeState extends State<Account> {
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController searchController = TextEditingController();
-  late Pokemon? _pokemon = null;
-  late Locations? _locations = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    _readAll();
-    getLocations();
   }
 
-  void getLocations() async {
-    _locations = (await ApiService().getLocations())!;
-    print(_locations);
-    setState(() {});
-  }
+  Future<void> sendRegisterRequest() async {
+    var url = Uri.parse(ApiConstants.url + ApiConstants.register);
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "full_name": fullNameController.text,
+          "mobile": phoneController.text,
+          "location_id": 1,
+          "gender": "Perempuan",
+          "password": "password123",
+          "is_admin": false
+        }));
 
-  Future<void> _readAll() async {
-    // Read value
-    String? token = await storage.read(key: 'token');
-    print('token:  $token');
-    // Read all values
-    Map<String, String> allValues = await storage.readAll();
-    print(allValues);
-    // setState(() {
-    //   _items = all.entries
-    //       .map((entry) => _SecItem(entry.key, entry.value))
-    //       .toList(growable: false);
-    // });
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body.toString());
+      print(data);
+
+      // Save auth/login data to storage
+      // await storage.write(key: 'token', value: data['data']['token']);
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Create Account Success!"),
+      ));
+      Navigator.restorablePushNamed(context, Home.routeName);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Create Account Failed"),
+      ));
+    }
   }
 
   void _onItemTapped(int index) {
@@ -62,7 +70,13 @@ class _HomeState extends State<Account> {
         Navigator.restorablePushNamed(context, Home.routeName);
         break;
       case 1:
-        Navigator.restorablePushNamed(context, SampleItemListView.routeName);
+        Navigator.restorablePushNamed(context, Account.routeName);
+        break;
+      case 2:
+        Navigator.restorablePushNamed(context, Wallet.routeName);
+        break;
+      case 3:
+        Navigator.restorablePushNamed(context, Profile.routeName);
         break;
       default:
     }
@@ -110,44 +124,101 @@ class _HomeState extends State<Account> {
           selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
           onTap: _onItemTapped,
         ),
-        body: _locations == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            // : GridView.count(
-            //         crossAxisCount: 2,
-            //         children: List.generate(_locations!.data.length, (index) {
-            //           return Column(
-            //             children: [
-            //               const Image(image: AssetImage('assets/images/location.png')),
-            //               Center(
-            //                 child: Text(
-            //                   _locations!.data[index].name.toUpperCase(),
-            //                   style: Theme.of(context).textTheme.headlineSmall,
-            //                 ),
-            //               )
-            //             ],
-            //           );
-            //         }),
-            //       ),
-            : Container(
-                padding: const EdgeInsets.all(20),
-                color: const Color.fromRGBO(60, 95, 107, 1),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: Color.fromRGBO(217, 217, 217, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const Column(
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          color: const Color.fromRGBO(60, 95, 107, 1),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+                color: Color.fromRGBO(217, 217, 217, 1),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                  Container(
+                      margin: const EdgeInsets.only(bottom: 20.0),
+                      child: const Text(
                         "Fast Parking System",
                         style: TextStyle(
-                            fontSize: 50, fontWeight: FontWeight.w500),
-                      ), //<------------
-                    ],
-                  ),
-                ),
-              ));
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.normal),
+                      )),
+                  Form(
+                      child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 40.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: TextFormField(
+                            controller: fullNameController,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                                prefixIcon: Icon(Icons.person_outline_outlined),
+                                prefixIconColor: Colors.black,
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'Nama Lengkap',
+                                labelStyle: TextStyle(color: Colors.black),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2))),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: TextFormField(
+                            controller: phoneController,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                                prefixIcon: Icon(Icons.phone),
+                                prefixIconColor: Colors.black,
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelText: 'No HP',
+                                labelStyle: TextStyle(color: Colors.black),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2))),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+                  // Text(
+                  //   "User ID".toUpperCase(),
+                  //   style: const TextStyle(color: Colors.white, fontSize: 22),
+                  // ),
+                  // Text('Password'.toUpperCase(),
+                  //     style: const TextStyle(color: Colors.white, fontSize: 22)),
+                  Container(
+                      margin: const EdgeInsets.only(top: 10.0),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(200, 50),
+                              padding: const EdgeInsets.all(10.0),
+                              textStyle: const TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                              shape: const StadiumBorder(),
+                              side: const BorderSide(
+                                  color: Colors.white, width: 2)),
+                          onPressed: sendRegisterRequest,
+                          // onPressed: () {
+                          //   // Navigate to the settings page. If the user leaves and returns
+                          //   // to the app after it has been killed while running in the
+                          //   // background, the navigation stack is restored.
+                          //   Navigator.restorablePushNamed(context, Home.routeName);
+                          // },
+                          child: Text(
+                            'Create'.toUpperCase(),
+                            style: const TextStyle(color: Colors.white),
+                          )))
+                ])),
+          ),
+        ));
   }
 }
