@@ -148,17 +148,18 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: Column(
                     children: [
-                      // TextFormField(
-                      //   controller: searchController,
-                      //   textAlign: TextAlign.center,
-                      //   decoration: const InputDecoration(
-                      //       hintText: 'Search',
-                      //       hintStyle: TextStyle(color: Colors.black),
-                      //       filled: true,
-                      //       fillColor: Colors.white,
-                      //       enabledBorder: OutlineInputBorder(
-                      //           borderSide: BorderSide(color: Colors.white))),
-                      // ),
+                      TextFormField(
+                        controller: searchController,
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(2.0),
+                            hintText: 'Search',
+                            hintStyle: TextStyle(color: Colors.black),
+                            filled: true,
+                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white))),
+                      ),
                       const Text(
                         "Hi Admin!",
                         style: TextStyle(
