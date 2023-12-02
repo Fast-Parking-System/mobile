@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fast_parking_system/src/constants.dart';
+import 'package:fast_parking_system/src/models/register_model.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
@@ -44,16 +45,16 @@ class _HomeState extends State<Account> {
         }));
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body.toString());
-      print(data);
+      // var data = json.decode(response.body.toString());
+      Register model = registerFromJson(response.body);
 
       // Save auth/login data to storage
       // await storage.write(key: 'token', value: data['data']['token']);
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Create Account Success!"),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Create Account Success! User Id = ${model.data.userId}"),
       ));
-      Navigator.restorablePushNamed(context, Home.routeName);
+      // Navigator.restorablePushNamed(context, Home.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Create Account Failed"),
@@ -156,7 +157,7 @@ class _HomeState extends State<Account> {
                           margin: const EdgeInsets.only(bottom: 20.0),
                           child: TextFormField(
                             controller: fullNameController,
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.black),
                             decoration: const InputDecoration(
                                 prefixIcon: Icon(Icons.person_outline_outlined),
                                 prefixIconColor: Colors.black,
@@ -173,7 +174,7 @@ class _HomeState extends State<Account> {
                           margin: const EdgeInsets.only(bottom: 20.0),
                           child: TextFormField(
                             controller: phoneController,
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.black),
                             decoration: const InputDecoration(
                                 prefixIcon: Icon(Icons.phone),
                                 prefixIconColor: Colors.black,

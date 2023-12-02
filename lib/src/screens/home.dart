@@ -100,6 +100,7 @@ class _HomeState extends State<Home> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: const Color.fromRGBO(217, 217, 217, 1),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/home.png')),
@@ -152,7 +153,7 @@ class _HomeState extends State<Home> {
                         controller: searchController,
                         textAlign: TextAlign.center,
                         decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(2.0),
+                            contentPadding: EdgeInsets.all(2.0),
                             hintText: 'Search',
                             hintStyle: TextStyle(color: Colors.black),
                             filled: true,
@@ -163,7 +164,9 @@ class _HomeState extends State<Home> {
                       const Text(
                         "Hi Admin!",
                         style: TextStyle(
-                            fontSize: 50, fontWeight: FontWeight.w500),
+                            color: Colors.black,
+                            fontSize: 50,
+                            fontWeight: FontWeight.w500),
                       ), //<------------
                       Expanded(
                         child: GridView.builder(
@@ -208,6 +211,7 @@ class _HomeState extends State<Home> {
                                           child: Text(
                                             _locations!.data[index].name,
                                             style: const TextStyle(
+                                                color: Colors.black,
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.normal),
                                           ),
