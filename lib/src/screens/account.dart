@@ -22,6 +22,7 @@ class Account extends StatefulWidget {
 class _HomeState extends State<Account> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 1;
@@ -40,7 +41,7 @@ class _HomeState extends State<Account> {
           "mobile": phoneController.text,
           "location_id": 1,
           "gender": "Perempuan",
-          "password": "password123",
+          "password": passwordController.text,
           "is_admin": false
         }));
 
@@ -181,6 +182,23 @@ class _HomeState extends State<Account> {
                                 fillColor: Colors.white,
                                 filled: true,
                                 labelText: 'No HP',
+                                labelStyle: TextStyle(color: Colors.black),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2))),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: TextFormField(
+                            controller: passwordController,
+                            style: const TextStyle(color: Colors.black),
+                            decoration: const InputDecoration(
+                                prefixIcon: Icon(Icons.fingerprint),
+                                prefixIconColor: Colors.black,
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelText: 'Password',
                                 labelStyle: TextStyle(color: Colors.black),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
