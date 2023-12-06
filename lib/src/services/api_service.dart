@@ -4,10 +4,7 @@ import 'dart:developer';
 import 'package:fast_parking_system/src/constants.dart';
 import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/models/pokemon_model.dart';
-<<<<<<< HEAD
-=======
 import 'package:fast_parking_system/src/models/whoami_model.dart';
->>>>>>> 5f10f0f6118e1cad3a7a36fd22f21dc4423c7f84
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
