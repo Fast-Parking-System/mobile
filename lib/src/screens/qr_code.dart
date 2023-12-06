@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fast_parking_system/src/models/whoami_model.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
@@ -7,8 +8,6 @@ import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class QRCode extends StatefulWidget {
   const QRCode({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class QRCode extends StatefulWidget {
 
 class _HomeState extends State<QRCode> {
   TextEditingController searchController = TextEditingController();
-  late WhoAmI? _whoami;
+  late WhoAmI? _whoami = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 2;
 
@@ -72,62 +71,65 @@ class _HomeState extends State<QRCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(217, 217, 217, 1),
-          automaticallyImplyLeading: false,
-          title: const Text(
-            'FPS',
-            style: TextStyle(color: Colors.black, fontSize: 30.0),
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(217, 217, 217, 1),
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'FPS',
+          style: TextStyle(color: Colors.black, fontSize: 30.0),
+        ),
+        actions: [
+          IconButton(
+            icon: const Image(image: AssetImage('assets/images/logout.png')),
+            onPressed: () async {
+              await storage.delete(key: 'token');
+              Navigator.restorablePushNamed(context, Login.routeName);
+            },
           ),
-          actions: [
-            IconButton(
-              icon: const Image(image: AssetImage('assets/images/logout.png')),
-              onPressed: () async {
-                await storage.delete(key: 'token');
-                Navigator.restorablePushNamed(context, Login.routeName);
-              },
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Image(image: AssetImage('assets/images/home.png')),
+              label: 'Account'),
+          BottomNavigationBarItem(
+              icon: Image(image: AssetImage('assets/images/account.png')),
+              label: 'Add Account'),
+          BottomNavigationBarItem(
+              icon: Image(image: AssetImage('assets/images/qr.png')),
+              label: 'Show QR'),
+          BottomNavigationBarItem(
+              icon: Image(image: AssetImage('assets/images/wallet.png')),
+              label: 'Wallet'),
+          BottomNavigationBarItem(
+              icon: Image(image: AssetImage('assets/images/user.png')),
+              label: 'Profile'),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
+        onTap: _onItemTapped,
+      ),
+      body: _whoami == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              width: double.infinity,
+              color: Colors.white, // White background color
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _whoami!.data.qrCode != null
+                      ? Image.memory(
+                          base64Decode(_whoami!.data.qrCode!),
+                          width: double.infinity,
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
             ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/home.png')),
-                label: 'Account'),
-            BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/account.png')),
-                label: 'Add Account'),
-            BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/qr.png')),
-                label: 'Show QR'),
-            BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/wallet.png')),
-                label: 'Wallet'),
-            BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/user.png')),
-                label: 'Profile'),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
-          onTap: _onItemTapped,
-        ),
-        body: _whoami == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Container(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
-                    _whoami!.data.qrCode != null
-                        ? Image.memory(
-                            base64Decode(_whoami!.data.qrCode!),
-                            width: 200.0,
-                            height: 200.0,
-                          )
-                        : const SizedBox.shrink(),
-                  ],
-                ),
-              ));
+    );
   }
 }
