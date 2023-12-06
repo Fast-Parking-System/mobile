@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/models/pokemon_model.dart';
+import 'package:fast_parking_system/src/models/whoami_model.dart';
 import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
@@ -25,7 +26,7 @@ class Profile extends StatefulWidget {
 class _HomeState extends State<Profile> {
   TextEditingController searchController = TextEditingController();
   late Pokemon? _pokemon = null;
-  late Locations? _locations = null;
+  late WhoAmI? _whoami = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 4;
 
@@ -33,12 +34,12 @@ class _HomeState extends State<Profile> {
   void initState() {
     super.initState();
     _readAll();
-    getLocations();
+    getWhoAmI();
   }
 
-  void getLocations() async {
-    _locations = (await ApiService().getLocations())!;
-    print(_locations);
+  void getWhoAmI() async {
+    _whoami = (await ApiService().getWhoAmI())!;
+    print(_whoami);
     setState(() {});
   }
 
@@ -125,19 +126,19 @@ class _HomeState extends State<Profile> {
           selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
           onTap: _onItemTapped,
         ),
-        body: _locations == null
+        body: _whoami == null
             ? const Center(
                 child: CircularProgressIndicator(),
               )
             // : GridView.count(
             //         crossAxisCount: 2,
-            //         children: List.generate(_locations!.data.length, (index) {
+            //         children: List.generate(_whoami!.data.length, (index) {
             //           return Column(
             //             children: [
             //               const Image(image: AssetImage('assets/images/location.png')),
             //               Center(
             //                 child: Text(
-            //                   _locations!.data[index].name.toUpperCase(),
+            //                   _whoami!.data[index].name.toUpperCase(),
             //                   style: Theme.of(context).textTheme.headlineSmall,
             //                 ),
             //               )
@@ -146,6 +147,7 @@ class _HomeState extends State<Profile> {
             //         }),
             //       ),
             : Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 color: const Color.fromRGBO(60, 95, 107, 1),
                 child: Container(
@@ -153,13 +155,132 @@ class _HomeState extends State<Profile> {
                   decoration: const BoxDecoration(
                       color: Color.fromRGBO(217, 217, 217, 1),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const Column(
+                  child: Column(
                     children: [
+                      const Image(
+                          image: AssetImage('assets/images/avatar.png')),
                       Text(
-                        "Profile",
-                        style: TextStyle(
-                            fontSize: 50, fontWeight: FontWeight.w500),
+                        "Hi ${_whoami!.data.fullName} !",
+                        style: const TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
                       ), //<------------
+                      SizedBox(
+                        width: double.infinity,
+                        height: 5,
+                        // height: double.infinity,
+                        child: Container(
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Text(
+                        "Info Profile",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ), //<------------
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.0,
+                            height: 50.0,
+                            margin:
+                                const EdgeInsets.only(left: 10.0, right: 30.0),
+                            decoration: const BoxDecoration(
+                                // color: Color.fromRGBO(131, 130, 130, 1),
+                                color: Color(0xff93A0AE),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                          Column(children: [
+                            const Text(
+                              "Nama",
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                            Text(
+                              _whoami!.data.fullName,
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                          ])
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.0,
+                            height: 50.0,
+                            margin:
+                                const EdgeInsets.only(left: 10.0, right: 30.0),
+                            decoration: const BoxDecoration(
+                                // color: Color.fromRGBO(131, 130, 130, 1),
+                                color: Color(0xff93A0AE),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                          Column(children: [
+                            const Text(
+                              "User ID",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                            Text(
+                              _whoami!.data.id,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                          ])
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.0,
+                            height: 50.0,
+                            margin:
+                                const EdgeInsets.only(left: 10.0, right: 30.0),
+                            decoration: const BoxDecoration(
+                                // color: Color.fromRGBO(131, 130, 130, 1),
+                                color: Color(0xff93A0AE),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                          Column(
+                            children: [
+                            const Text(
+                              "Jenis Kelamin",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                            Text(
+                              _whoami!.data.gender,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                          ])
+                        ],
+                      )
                     ],
                   ),
                 ),
