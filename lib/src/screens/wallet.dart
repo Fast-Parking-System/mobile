@@ -6,6 +6,7 @@ import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dar
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
+import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -67,6 +68,9 @@ class _HomeState extends State<Wallet> {
         break;
       case 2:
         Navigator.restorablePushNamed(context, Wallet.routeName);
+        break;
+      case 3:
+        Navigator.restorablePushNamed(context, Profile.routeName);
         break;
       default:
     }
