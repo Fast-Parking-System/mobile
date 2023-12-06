@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/models/pokemon_model.dart';
+import 'package:fast_parking_system/src/models/whoami_model.dart';
 import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
-import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
+import 'package:fast_parking_system/src/screens/login.dart';
+import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ import 'package:http/http.dart' as http;
 class QRCode extends StatefulWidget {
   const QRCode({Key? key}) : super(key: key);
 
-  static const routeName = '/profile';
+  static const routeName = '/qr-code';
 
   @override
   _HomeState createState() => _HomeState();
@@ -25,20 +27,20 @@ class QRCode extends StatefulWidget {
 class _HomeState extends State<QRCode> {
   TextEditingController searchController = TextEditingController();
   late Pokemon? _pokemon = null;
-  late Locations? _locations = null;
+  late WhoAmI? _whoami = null;
   final storage = const FlutterSecureStorage();
-  int _selectedIndex = 4;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
     super.initState();
     _readAll();
-    getLocations();
+    getWhoAmI();
   }
 
-  void getLocations() async {
-    _locations = (await ApiService().getLocations())!;
-    print(_locations);
+  void getWhoAmI() async {
+    _whoami = (await ApiService().getWhoAmI())!;
+    print(_whoami);
     setState(() {});
   }
 
@@ -68,13 +70,13 @@ class _HomeState extends State<QRCode> {
         Navigator.restorablePushNamed(context, Account.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, Wallet.routeName);
+        Navigator.restorablePushNamed(context, QRCode.routeName);
         break;
       case 3:
-        Navigator.restorablePushNamed(context, Profile.routeName);
+        Navigator.restorablePushNamed(context, Wallet.routeName);
         break;
       case 4:
-        Navigator.restorablePushNamed(context, QRCode.routeName);
+        Navigator.restorablePushNamed(context, Profile.routeName);
         break;
       default:
     }
@@ -125,19 +127,19 @@ class _HomeState extends State<QRCode> {
           selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
           onTap: _onItemTapped,
         ),
-        body: _locations == null
+        body: _whoami == null
             ? const Center(
                 child: CircularProgressIndicator(),
               )
             // : GridView.count(
             //         crossAxisCount: 2,
-            //         children: List.generate(_locations!.data.length, (index) {
+            //         children: List.generate(_whoami!.data.length, (index) {
             //           return Column(
             //             children: [
             //               const Image(image: AssetImage('assets/images/location.png')),
             //               Center(
             //                 child: Text(
-            //                   _locations!.data[index].name.toUpperCase(),
+            //                   _whoami!.data[index].name.toUpperCase(),
             //                   style: Theme.of(context).textTheme.headlineSmall,
             //                 ),
             //               )
@@ -146,22 +148,23 @@ class _HomeState extends State<QRCode> {
             //         }),
             //       ),
             : Container(
-                padding: const EdgeInsets.all(20),
-                color: const Color.fromRGBO(60, 95, 107, 1),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: Color.fromRGBO(217, 217, 217, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const Column(
-                    children: [
-                      Text(
-                        "Profile",
-                        style: TextStyle(
-                            fontSize: 50, fontWeight: FontWeight.w500),
-                      ), //<------------
-                    ],
-                  ),
+                // ... Your existing code ...
+                child: Column(
+                  children: [
+                    // ... Your existing code ...
+
+                    // Add this part to display the base64 image
+                    const SizedBox(height: 30),
+                    _whoami!.data.qrCode != null
+                        ? Image.memory(
+                            base64Decode(_whoami!.data.qrCode!),
+                            width: 200.0,
+                            height: 200.0,
+                          )
+                        : const SizedBox.shrink(),
+
+                    // ... Your existing code ...
+                  ],
                 ),
               ));
   }

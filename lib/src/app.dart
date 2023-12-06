@@ -2,6 +2,7 @@ import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
+import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -88,6 +89,8 @@ class MyApp extends StatelessWidget {
                     return const Home();
                   case Account.routeName:
                     return const Account();
+                  case QRCode.routeName:
+                    return const QRCode();
                   case Wallet.routeName:
                     return const Wallet();
                   case Profile.routeName:

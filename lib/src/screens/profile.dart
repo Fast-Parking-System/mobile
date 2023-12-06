@@ -69,13 +69,13 @@ class _HomeState extends State<Profile> {
         Navigator.restorablePushNamed(context, Account.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, Wallet.routeName);
+        Navigator.restorablePushNamed(context, QRCode.routeName);
         break;
       case 3:
-        Navigator.restorablePushNamed(context, Profile.routeName);
+        Navigator.restorablePushNamed(context, Wallet.routeName);
         break;
       case 4:
-        Navigator.restorablePushNamed(context, QRCode.routeName);
+        Navigator.restorablePushNamed(context, Profile.routeName);
         break;
       default:
     }
