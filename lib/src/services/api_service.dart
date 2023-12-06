@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:fast_parking_system/src/constants.dart';
 import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/models/pokemon_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+
+const storage = FlutterSecureStorage();
 
 class ApiService {
   Future<Pokemon?> getPokemons() async {
@@ -23,7 +26,16 @@ class ApiService {
   Future<Locations?> getLocations() async {
     try {
       var url = Uri.parse(ApiConstants.url + ApiConstants.locations);
-      var response = await http.get(url);
+      // Get token from storage
+      String? token = await storage.read(key: 'token');
+
+      var response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization header
+        },
+      );
+
       if (response.statusCode == 200) {
         Locations model = locationsFromJson(response.body);
         return model;

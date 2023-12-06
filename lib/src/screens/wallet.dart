@@ -5,10 +5,12 @@ import 'package:fast_parking_system/src/models/pokemon_model.dart';
 import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
+import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:http/http.dart' as http;
 
 class Wallet extends StatefulWidget {
@@ -25,7 +27,7 @@ class _HomeState extends State<Wallet> {
   late Pokemon? _pokemon = null;
   late Locations? _locations = null;
   final storage = const FlutterSecureStorage();
-  int _selectedIndex = 2;
+  int _selectedIndex = 3;
 
   @override
   void initState() {
@@ -68,6 +70,12 @@ class _HomeState extends State<Wallet> {
       case 2:
         Navigator.restorablePushNamed(context, Wallet.routeName);
         break;
+      case 3:
+        Navigator.restorablePushNamed(context, Profile.routeName);
+        break;
+      case 4:
+        Navigator.restorablePushNamed(context, QRCode.routeName);
+        break;
       default:
     }
   }
@@ -103,6 +111,9 @@ class _HomeState extends State<Wallet> {
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/account.png')),
                 label: 'Add Account'),
+            BottomNavigationBarItem(
+                icon: Image(image: AssetImage('assets/images/qr.png')),
+                label: 'Show QR'),
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/wallet.png')),
                 label: 'Wallet'),

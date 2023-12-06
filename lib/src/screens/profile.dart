@@ -6,6 +6,7 @@ import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dar
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
+import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _HomeState extends State<Profile> {
   late Pokemon? _pokemon = null;
   late Locations? _locations = null;
   final storage = const FlutterSecureStorage();
-  int _selectedIndex = 1;
+  int _selectedIndex = 4;
 
   @override
   void initState() {
@@ -72,6 +73,9 @@ class _HomeState extends State<Profile> {
       case 3:
         Navigator.restorablePushNamed(context, Profile.routeName);
         break;
+      case 4:
+        Navigator.restorablePushNamed(context, QRCode.routeName);
+        break;
       default:
     }
   }
@@ -107,6 +111,9 @@ class _HomeState extends State<Profile> {
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/account.png')),
                 label: 'Add Account'),
+            BottomNavigationBarItem(
+                icon: Image(image: AssetImage('assets/images/qr.png')),
+                label: 'Show QR'),
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/wallet.png')),
                 label: 'Wallet'),
