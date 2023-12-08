@@ -27,7 +27,6 @@ class _HomeState extends State<QRCode> {
   @override
   void initState() {
     super.initState();
-    _readAll();
     getWhoAmI();
   }
 
@@ -35,13 +34,6 @@ class _HomeState extends State<QRCode> {
     _whoami = (await ApiService().getWhoAmI())!;
     print(_whoami);
     setState(() {});
-  }
-
-  Future<void> _readAll() async {
-    String? token = await storage.read(key: 'token');
-    print('token:  $token');
-    Map<String, String> allValues = await storage.readAll();
-    print(allValues);
   }
 
   void _onItemTapped(int index) {
@@ -71,65 +63,71 @@ class _HomeState extends State<QRCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(217, 217, 217, 1),
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'FPS',
-          style: TextStyle(color: Colors.black, fontSize: 30.0),
-        ),
-        actions: [
-          IconButton(
-            icon: const Image(image: AssetImage('assets/images/logout.png')),
-            onPressed: () async {
-              await storage.delete(key: 'token');
-              Navigator.restorablePushNamed(context, Login.routeName);
-            },
+        appBar: AppBar(
+          backgroundColor: const Color.fromRGBO(217, 217, 217, 1),
+          automaticallyImplyLeading: false,
+          title: const Text(
+            'FPS',
+            style: TextStyle(color: Colors.black, fontSize: 30.0),
           ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Image(image: AssetImage('assets/images/home.png')),
-              label: 'Account'),
-          BottomNavigationBarItem(
-              icon: Image(image: AssetImage('assets/images/account.png')),
-              label: 'Add Account'),
-          BottomNavigationBarItem(
-              icon: Image(image: AssetImage('assets/images/qr.png')),
-              label: 'Show QR'),
-          BottomNavigationBarItem(
-              icon: Image(image: AssetImage('assets/images/wallet.png')),
-              label: 'Wallet'),
-          BottomNavigationBarItem(
-              icon: Image(image: AssetImage('assets/images/user.png')),
-              label: 'Profile'),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
-        onTap: _onItemTapped,
-      ),
-      body: _whoami == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              width: double.infinity,
-              color: Colors.white, // White background color
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _whoami!.data.qrCode != null
-                      ? Image.memory(
-                          base64Decode(_whoami!.data.qrCode!),
-                          width: double.infinity,
-                        )
-                      : const SizedBox.shrink(),
-                ],
-              ),
+          actions: [
+            IconButton(
+              icon: const Image(image: AssetImage('assets/images/logout.png')),
+              onPressed: () async {
+                await storage.delete(key: 'token');
+                Navigator.restorablePushNamed(context, Login.routeName);
+              },
             ),
-    );
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Image(image: AssetImage('assets/images/home.png')),
+                label: 'Account'),
+            BottomNavigationBarItem(
+                icon: Image(image: AssetImage('assets/images/account.png')),
+                label: 'Add Account'),
+            BottomNavigationBarItem(
+                icon: Image(image: AssetImage('assets/images/qr.png')),
+                label: 'Show QR'),
+            BottomNavigationBarItem(
+                icon: Image(image: AssetImage('assets/images/wallet.png')),
+                label: 'Wallet'),
+            BottomNavigationBarItem(
+                icon: Image(image: AssetImage('assets/images/user.png')),
+                label: 'Profile'),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
+          onTap: _onItemTapped,
+        ),
+        body: _whoami == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                color: const Color.fromRGBO(60, 95, 107, 1),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromRGBO(217, 217, 217, 1),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _whoami!.data.qrCode != null
+                          ? Image.memory(
+                              base64Decode(_whoami!.data.qrCode),
+                              width: double.infinity,
+                            )
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+                ),
+              ));
   }
 }
