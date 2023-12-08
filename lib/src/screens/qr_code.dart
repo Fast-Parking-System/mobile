@@ -107,7 +107,6 @@ class _HomeState extends State<QRCode> {
                 child: CircularProgressIndicator(),
               )
             : Container(
-                width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 color: const Color.fromRGBO(60, 95, 107, 1),
                 child: Container(
@@ -117,8 +116,16 @@ class _HomeState extends State<QRCode> {
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: const Text(
+                            "Lokasi",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 30,
+                                fontWeight: FontWeight.normal),
+                          )),
                       _whoami!.data.qrCode != null
                           ? Image.memory(
                               base64Decode(_whoami!.data.qrCode),

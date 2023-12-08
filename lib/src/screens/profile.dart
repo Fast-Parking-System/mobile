@@ -130,22 +130,6 @@ class _HomeState extends State<Profile> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            // : GridView.count(
-            //         crossAxisCount: 2,
-            //         children: List.generate(_whoami!.data.length, (index) {
-            //           return Column(
-            //             children: [
-            //               const Image(image: AssetImage('assets/images/location.png')),
-            //               Center(
-            //                 child: Text(
-            //                   _whoami!.data[index].name.toUpperCase(),
-            //                   style: Theme.of(context).textTheme.headlineSmall,
-            //                 ),
-            //               )
-            //             ],
-            //           );
-            //         }),
-            //       ),
             : Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
