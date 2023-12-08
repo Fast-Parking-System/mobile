@@ -118,14 +118,16 @@ class _HomeState extends State<QRCode> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                          margin: const EdgeInsets.only(bottom: 20.0),
-                          child: const Text(
-                            "Lokasi",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal),
-                          )),
+                        margin: const EdgeInsets.only(bottom: 20.0),
+                        child: Text(
+                          "Lokasi ${_whoami!.data.location}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
                       _whoami!.data.qrCode != null
                           ? Image.memory(
                               base64Decode(_whoami!.data.qrCode),

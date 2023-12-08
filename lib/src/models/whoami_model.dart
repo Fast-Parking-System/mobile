@@ -45,6 +45,7 @@ class Data {
   String gender;
   int isAdmin;
   String qrCode;
+  String location;
 
   Data({
     required this.id,
@@ -55,6 +56,7 @@ class Data {
     required this.gender,
     required this.isAdmin,
     required this.qrCode,
+    required this.location,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -66,6 +68,7 @@ class Data {
         gender: json["gender"],
         isAdmin: json["is_admin"],
         qrCode: json["qr_code"],
+        location: json["location"],
       );
 
   Map<String, dynamic> toJson() => {
