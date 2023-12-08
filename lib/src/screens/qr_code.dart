@@ -103,17 +103,18 @@ class _HomeState extends State<QRCode> {
           onTap: _onItemTapped,
         ),
         body: _whoami == null
-            ? const Center(
+            ? Center(
                 child: CircularProgressIndicator(),
               )
             : Container(
-                padding: const EdgeInsets.all(20),
-                color: const Color.fromRGBO(60, 95, 107, 1),
+                padding: EdgeInsets.all(20),
+                color: const Color(0xFF3C5F6B),
                 child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: Color.fromRGBO(217, 217, 217, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD9D9D9),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -128,12 +129,11 @@ class _HomeState extends State<QRCode> {
                           ),
                         ),
                       ),
-                      _whoami!.data.qrCode != null
-                          ? Image.memory(
-                              base64Decode(_whoami!.data.qrCode),
-                              width: double.infinity,
-                            )
-                          : const SizedBox.shrink(),
+                      if (_whoami!.data.qrCode != null)
+                        Image.memory(
+                          base64Decode(_whoami!.data.qrCode),
+                          width: double.infinity,
+                        ),
                     ],
                   ),
                 ),
