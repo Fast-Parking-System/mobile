@@ -33,10 +33,20 @@ class _LoginState extends State<Login> {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body.toString());
-      // print(data);
+      print(data['data']);
 
-      // Save auth/login data to storage
+      // save token
       await storage.write(key: 'token', value: data['data']['token']);
+
+      // save is_admin
+      bool isAdmin = data['data']['is_admin'];
+      print(isAdmin.toString());
+      await storage.write(key: 'isAdmin', value: isAdmin.toString());
+
+      // save user_id
+      int userId = data['data']['user_id'];
+      print(userId.toString());
+      await storage.write(key: 'userId', value: userId.toString());
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Login Success!"),

@@ -1,18 +1,12 @@
-import 'dart:convert';
-
-import 'package:fast_parking_system/src/models/locations_model.dart';
-import 'package:fast_parking_system/src/models/pokemon_model.dart';
-import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
+import 'package:fast_parking_system/src/models/analytics_model.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
-import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
+import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fast_parking_system/src/screens/profile.dart';
-import 'package:http/http.dart' as http;
 
 class Wallet extends StatefulWidget {
   const Wallet({Key? key}) : super(key: key);
@@ -25,36 +19,19 @@ class Wallet extends StatefulWidget {
 
 class _HomeState extends State<Wallet> {
   TextEditingController searchController = TextEditingController();
-  late Pokemon? _pokemon = null;
-  late Locations? _locations = null;
+  late Analytics? _analytics = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 3;
 
   @override
   void initState() {
     super.initState();
-    _readAll();
-    getLocations();
+    getAnalytics();
   }
 
-  void getLocations() async {
-    _locations = (await ApiService().getLocations())!;
-    print(_locations);
+  void getAnalytics() async {
+    _analytics = (await ApiService().getAnalytics())!;
     setState(() {});
-  }
-
-  Future<void> _readAll() async {
-    // Read value
-    String? token = await storage.read(key: 'token');
-    print('token:  $token');
-    // Read all values
-    Map<String, String> allValues = await storage.readAll();
-    print(allValues);
-    // setState(() {
-    //   _items = all.entries
-    //       .map((entry) => _SecItem(entry.key, entry.value))
-    //       .toList(growable: false);
-    // });
   }
 
   void _onItemTapped(int index) {
@@ -126,27 +103,12 @@ class _HomeState extends State<Wallet> {
           selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
           onTap: _onItemTapped,
         ),
-        body: _locations == null
+        body: _analytics == null
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            // : GridView.count(
-            //         crossAxisCount: 2,
-            //         children: List.generate(_locations!.data.length, (index) {
-            //           return Column(
-            //             children: [
-            //               const Image(image: AssetImage('assets/images/location.png')),
-            //               Center(
-            //                 child: Text(
-            //                   _locations!.data[index].name.toUpperCase(),
-            //                   style: Theme.of(context).textTheme.headlineSmall,
-            //                 ),
-            //               )
-            //             ],
-            //           );
-            //         }),
-            //       ),
             : Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 color: const Color.fromRGBO(60, 95, 107, 1),
                 child: Container(
@@ -154,15 +116,422 @@ class _HomeState extends State<Wallet> {
                   decoration: const BoxDecoration(
                       color: Color.fromRGBO(217, 217, 217, 1),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const Column(
-                    children: [
-                      Text(
-                        "Wallet",
-                        style: TextStyle(
-                            fontSize: 50, fontWeight: FontWeight.w500),
-                      ), //<------------
-                    ],
-                  ),
+                  child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      controller: ScrollController(),
+                      child: Column(
+                        children: [
+                          // Daily Analytics
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Daily Analytics',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Table(
+                            border: TableBorder.all(
+                                color: Colors.grey[
+                                    300]!), // Set border color to a lighter shade of grey
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              const TableRow(
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(60, 95, 107,
+                                      1), // Darker color for headers
+                                ),
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Date',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Amount',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ..._analytics?.data.daily.map(
+                                    (daily) => TableRow(
+                                      children: [
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              daily.date,
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Rp${daily.amount.toString()}",
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ) ??
+                                  [
+                                    const TableRow(children: [Text('No data')])
+                                  ]
+                            ],
+                          ),
+                          // Weekly Analytics
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Weekly Analytics',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors
+                                        .black, // Adjust title text color as needed
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Table(
+                            border: TableBorder.all(
+                                color: Colors.grey[
+                                    300]!), // Set border color to a lighter shade of grey
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              const TableRow(
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(60, 95, 107,
+                                      1), // Darker color for headers
+                                ),
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Start Date',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'End Date',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Amount',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ..._analytics?.data.weekly.map(
+                                    (weekly) => TableRow(
+                                      children: [
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              weekly.startDate,
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              weekly.endDate,
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Rp${weekly.amount.toString()}",
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ) ??
+                                  [
+                                    const TableRow(children: [Text('No data')])
+                                  ]
+                            ],
+                          ),
+                          // Monthly Analytics
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Monthly Analytics',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors
+                                        .black, // Adjust title text color as needed
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Table(
+                            border: TableBorder.all(
+                                color: Colors.grey[
+                                    300]!), // Set border color to a lighter shade of grey
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              const TableRow(
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(60, 95, 107,
+                                      1), // Darker color for headers
+                                ),
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Month',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Amount',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ..._analytics?.data.monthly.map(
+                                    (monthly) => TableRow(
+                                      children: [
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              monthly.month,
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Rp${monthly.amount.toString()}",
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ) ??
+                                  [
+                                    const TableRow(children: [Text('No data')])
+                                  ]
+                            ],
+                          ),
+                          // Yearly Analytics
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Yearly Analytics',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors
+                                        .black, // Adjust title text color as needed
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Table(
+                            border: TableBorder.all(
+                                color: Colors.grey[
+                                    300]!), // Set border color to a lighter shade of grey
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              const TableRow(
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(60, 95, 107,
+                                      1), // Darker color for headers
+                                ),
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Year',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Amount',
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // White text for headers
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ..._analytics?.data.yearly.map(
+                                    (yearly) => TableRow(
+                                      children: [
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              yearly.year.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Rp${yearly.amount.toString()}",
+                                              style: const TextStyle(
+                                                  color: Colors
+                                                      .black87), // Adjust text color as needed
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ) ??
+                                  [
+                                    const TableRow(children: [Text('No data')])
+                                  ]
+                            ],
+                          )
+                        ],
+                      )),
                 ),
               ));
   }
