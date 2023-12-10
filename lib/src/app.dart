@@ -1,4 +1,5 @@
 import 'package:fast_parking_system/src/screens/account.dart';
+import 'package:fast_parking_system/src/screens/attendants.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
@@ -89,6 +90,8 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case Home.routeName:
                     return const Home();
+                  case AttendantsScreen.routeName:
+                    return const AttendantsScreen();
                   case Account.routeName:
                     return const Account();
                   case QRCode.routeName:

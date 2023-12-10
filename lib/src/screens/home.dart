@@ -4,6 +4,7 @@ import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/models/pokemon_model.dart';
 import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
+import 'package:fast_parking_system/src/screens/attendants.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
@@ -185,6 +186,13 @@ class _HomeState extends State<Home> {
                               padding: const EdgeInsets.all(2.0),
                               child: Container(
                                 child: InkWell(
+                                  onTap: () {
+                                    // Navigate to the settings page. If the user leaves and returns
+                                    // to the app after it has been killed while running in the
+                                    // background, the navigation stack is restored.
+                                    Navigator.restorablePushNamed(
+                                        context, AttendantsScreen.routeName);
+                                  },
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
@@ -222,7 +230,6 @@ class _HomeState extends State<Home> {
                                       ],
                                     ),
                                   ),
-                                  onTap: () {},
                                 ),
                               ),
                             );

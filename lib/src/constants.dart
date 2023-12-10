@@ -5,5 +5,6 @@ class ApiConstants {
   static String register = '/api/register';
   static String whoami = '/api/whoami';
   static String locations = '/api/locations';
+  static String attendants = '/api/attendants';
   static String pokemonEndpoint = '/pokemon';
 }
