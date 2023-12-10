@@ -46,6 +46,7 @@ class ApiService {
       }
     } catch (e) {
       log(e.toString());
+      storage.delete(key: 'token');
     }
     return null;
   }

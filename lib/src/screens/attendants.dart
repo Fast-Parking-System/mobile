@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fast_parking_system/src/models/attendants_model.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
@@ -156,11 +158,31 @@ class _HomeState extends State<AttendantsScreen> {
                       print(item);
 
                       return ListTile(
-                          title: Text('SampleItem ${item?.id}'),
-                          leading: const CircleAvatar(
-                            // Display the Flutter Logo image asset.
-                            foregroundImage:
-                                AssetImage('assets/images/flutter_logo.png'),
+                          title: Text('${item?.fullName}'.toUpperCase()),
+                          titleTextStyle: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                          leading: Image.asset(
+                            'assets/images/avatar.png',
+                            height: 100,
+                          ),
+                          subtitle: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${item?.location}',
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                '${item?.id}',
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          ),
+                          trailing: Image.memory(
+                            base64Decode(item!.qrCode),
+                            width: 100,
+                            height: 100,
                           ),
                           onTap: () {
                             // Navigate to the details page. If the user leaves and returns to
