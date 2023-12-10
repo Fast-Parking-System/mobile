@@ -133,6 +133,7 @@ class _HomeState extends State<QRCode> {
                         Image.memory(
                           base64Decode(_whoami!.data.qrCode),
                           width: double.infinity,
+                          height: 400,
                         ),
                     ],
                   ),
