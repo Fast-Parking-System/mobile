@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:fast_parking_system/src/constants.dart';
@@ -51,7 +52,8 @@ class _LoginState extends State<Login> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Login Success!"),
       ));
-      Navigator.restorablePushNamed(context, Home.routeName);
+      if (isAdmin) Navigator.restorablePushNamed(context, Home.routeName);
+      else Navigator.restorablePushNamed(context, HomeAttendant.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Login Failed"),

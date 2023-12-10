@@ -8,16 +8,16 @@ import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class Wallet extends StatefulWidget {
-  const Wallet({Key? key}) : super(key: key);
+class WalletAttendant extends StatefulWidget {
+  const WalletAttendant({Key? key}) : super(key: key);
 
-  static const routeName = '/wallet';
+  static const routeName = '/wallet_attendant';
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Wallet> {
+class _HomeState extends State<WalletAttendant> {
   TextEditingController searchController = TextEditingController();
   late Analytics? _analytics = null;
   final storage = const FlutterSecureStorage();
@@ -43,10 +43,10 @@ class _HomeState extends State<Wallet> {
         Navigator.restorablePushNamed(context, Home.routeName);
         break;
       case 1:
-        Navigator.restorablePushNamed(context, Account.routeName);
+        Navigator.restorablePushNamed(context, QRCode.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, Wallet.routeName);
+        Navigator.restorablePushNamed(context, WalletAttendant.routeName);
         break;
       case 3:
         Navigator.restorablePushNamed(context, Profile.routeName);

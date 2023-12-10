@@ -47,6 +47,28 @@ class ApiService {
     return null;
   }
 
+  Future<Locations?> getLocationsBySearch() async {
+    // TODO: for getting location by search param
+    try {
+      String? token = await storage.read(key: 'token');
+      print('token from locations:  $token');
+      var url = Uri.parse(ApiConstants.url + ApiConstants.locations);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      var response = await http.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        Locations model = locationsFromJson(response.body);
+        return model;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
   Future<WhoAmI?> getWhoAmI() async {
     try {
       String? token = await storage.read(key: 'token');

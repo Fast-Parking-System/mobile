@@ -70,12 +70,9 @@ class _HomeState extends State<Home> {
         Navigator.restorablePushNamed(context, Account.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, QRCode.routeName);
-        break;
-      case 3:
         Navigator.restorablePushNamed(context, Wallet.routeName);
         break;
-      case 4:
+      case 3:
         Navigator.restorablePushNamed(context, Profile.routeName);
         break;
       default:
@@ -114,9 +111,6 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/account.png')),
                 label: 'Add Account'),
-            BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/qr.png')),
-                label: 'Show QR'),
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/wallet.png')),
                 label: 'Wallet'),

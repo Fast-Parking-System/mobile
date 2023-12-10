@@ -1,11 +1,7 @@
-import 'dart:convert';
-
-import 'package:fast_parking_system/src/models/locations_model.dart';
-import 'package:fast_parking_system/src/models/pokemon_model.dart';
 import 'package:fast_parking_system/src/models/whoami_model.dart';
-import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
+import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/wallet.dart';
@@ -25,10 +21,10 @@ class Profile extends StatefulWidget {
 
 class _HomeState extends State<Profile> {
   TextEditingController searchController = TextEditingController();
-  late Pokemon? _pokemon = null;
   late WhoAmI? _whoami = null;
   final storage = const FlutterSecureStorage();
-  int _selectedIndex = 4;
+  int _selectedIndex = 3;
+  String isAdmin = 'false';
 
   @override
   void initState() {
@@ -47,6 +43,7 @@ class _HomeState extends State<Profile> {
     // Read value
     String? token = await storage.read(key: 'token');
     print('token:  $token');
+    isAdmin = (await storage.read(key: 'isAdmin'))!;
     // Read all values
     Map<String, String> allValues = await storage.readAll();
     print(allValues);
@@ -63,18 +60,19 @@ class _HomeState extends State<Profile> {
     });
     switch (index) {
       case 0:
-        Navigator.restorablePushNamed(context, Home.routeName);
+        isAdmin == 'true'
+            ? Navigator.restorablePushNamed(context, Home.routeName)
+            : Navigator.restorablePushNamed(context, HomeAttendant.routeName);
         break;
       case 1:
-        Navigator.restorablePushNamed(context, Account.routeName);
+        isAdmin == 'true'
+            ? Navigator.restorablePushNamed(context, Account.routeName)
+            : Navigator.restorablePushNamed(context, QRCode.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, QRCode.routeName);
-        break;
-      case 3:
         Navigator.restorablePushNamed(context, Wallet.routeName);
         break;
-      case 4:
+      case 3:
         Navigator.restorablePushNamed(context, Profile.routeName);
         break;
       default:
@@ -105,20 +103,20 @@ class _HomeState extends State<Profile> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
+          items: <BottomNavigationBarItem>[
+            const BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/home.png')),
-                label: 'Account'),
+                label: 'Home'),
             BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/account.png')),
-                label: 'Add Account'),
-            BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/qr.png')),
-                label: 'Show QR'),
-            BottomNavigationBarItem(
+                icon: (isAdmin == 'true')
+                    ? const Image(
+                        image: AssetImage('assets/images/account.png'))
+                    : const Image(image: AssetImage('assets/images/qr.png')),
+                label: (isAdmin == 'true') ? 'Add Account' : 'QR Code'),
+            const BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/wallet.png')),
                 label: 'Wallet'),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/user.png')),
                 label: 'Profile'),
           ],
@@ -244,8 +242,7 @@ class _HomeState extends State<Profile> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                           ),
-                          Column(
-                            children: [
+                          Column(children: [
                             const Text(
                               "Jenis Kelamin",
                               textAlign: TextAlign.left,
