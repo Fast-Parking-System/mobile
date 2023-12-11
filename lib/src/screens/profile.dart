@@ -8,7 +8,6 @@ import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -137,7 +136,8 @@ class _HomeState extends State<Profile> {
                   decoration: const BoxDecoration(
                       color: Color.fromRGBO(217, 217, 217, 1),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Column(
+                  child: SingleChildScrollView(
+                      child: Column(
                     children: [
                       const Image(
                           image: AssetImage('assets/images/avatar.png')),
@@ -263,7 +263,7 @@ class _HomeState extends State<Profile> {
                         ],
                       )
                     ],
-                  ),
+                  )),
                 ),
               ));
   }

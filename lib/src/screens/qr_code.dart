@@ -4,11 +4,8 @@ import 'package:fast_parking_system/src/screens/wallet_attendant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fast_parking_system/src/models/whoami_model.dart';
-import 'package:fast_parking_system/src/screens/account.dart';
-import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
-import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 
 class QRCode extends StatefulWidget {
@@ -99,14 +96,14 @@ class _HomeState extends State<QRCode> {
           onTap: _onItemTapped,
         ),
         body: _whoami == null
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 color: const Color(0xFF3C5F6B),
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: const Color(0xFFD9D9D9),
                     borderRadius: BorderRadius.circular(20),
@@ -118,19 +115,18 @@ class _HomeState extends State<QRCode> {
                         margin: const EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           "Lokasi ${_whoami!.data.location}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 30,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
                       ),
-                      if (_whoami!.data.qrCode != null)
-                        Image.memory(
-                          base64Decode(_whoami!.data.qrCode),
-                          width: double.infinity,
-                          height: 400,
-                        ),
+                      Image.memory(
+                        base64Decode(_whoami!.data.qrCode),
+                        width: double.infinity,
+                        height: 400,
+                      ),
                     ],
                   ),
                 ),

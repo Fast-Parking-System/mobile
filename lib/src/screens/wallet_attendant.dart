@@ -1,5 +1,4 @@
 import 'package:fast_parking_system/src/models/analytics_model.dart';
-import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';

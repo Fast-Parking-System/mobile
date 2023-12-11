@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:developer';
-
 import 'package:fast_parking_system/src/constants.dart';
 import 'package:fast_parking_system/src/models/analytics_model.dart';
 import 'package:fast_parking_system/src/models/attendants_model.dart';
@@ -74,47 +72,47 @@ class ApiService {
   }
 
   Future<Attendants?> getAttendants({String? search, int? locationId}) async {
-  try {
-    String? token = await storage.read(key: 'token');
-    
-    // Build the base URL
-    var url = Uri.parse('${ApiConstants.url}/api/attendants');
+    try {
+      String? token = await storage.read(key: 'token');
 
-    // Add query parameters conditionally
-    Map<String, String> queryParams = {};
-    if (search != null) {
-      queryParams['search'] = search;
-    }
-    if (locationId != null) {
-      queryParams['location_id'] = locationId.toString();
-    }
-    if (queryParams.isNotEmpty) {
-      url = Uri(
-        scheme: url.scheme,
-        host: url.host,
-        path: url.path,
-        queryParameters: queryParams,
-      );
-    }
+      // Build the base URL
+      var url = Uri.parse('${ApiConstants.url}/api/attendants');
 
-    var headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
+      // Add query parameters conditionally
+      Map<String, String> queryParams = {};
+      if (search != null) {
+        queryParams['search'] = search;
+      }
+      if (locationId != null) {
+        queryParams['location_id'] = locationId.toString();
+      }
+      if (queryParams.isNotEmpty) {
+        url = Uri(
+          scheme: url.scheme,
+          host: url.host,
+          path: url.path,
+          queryParameters: queryParams,
+        );
+      }
 
-    var response = await http.get(url, headers: headers);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
 
-    if (response.statusCode == 200) {
-      Attendants model = attendantsFromJson(response.body);
-      print(model);
-      return model;
+      var response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        Attendants model = attendantsFromJson(response.body);
+        print(model);
+        return model;
+      }
+    } catch (e) {
+      log(e.toString());
     }
-  } catch (e) {
-    log(e.toString());
+    return null;
   }
-  return null;
-}
 
   Future<WhoAmI?> getWhoAmI() async {
     try {
