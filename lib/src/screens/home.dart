@@ -1,18 +1,12 @@
-import 'dart:convert';
-
 import 'package:fast_parking_system/src/models/locations_model.dart';
-import 'package:fast_parking_system/src/models/pokemon_model.dart';
-import 'package:fast_parking_system/src/sample_feature/sample_item_list_view.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/attendants.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
-import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -25,7 +19,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TextEditingController searchController = TextEditingController();
-  late Pokemon? _pokemon = null;
   late Locations? _locations = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 0;

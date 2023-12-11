@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:fast_parking_system/src/constants.dart';
 import 'package:fast_parking_system/src/models/register_model.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
+import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/screens/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:http/http.dart' as http;
 
 class Account extends StatefulWidget {
@@ -25,12 +27,22 @@ class _HomeState extends State<Account> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController searchController = TextEditingController();
+  late Locations? _locations = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 1;
+  late int? selectedLocationId = null;
+  late String? selectedGender = null;
 
   @override
   void initState() {
     super.initState();
+    getLocations();
+  }
+
+  void getLocations() async {
+    _locations = (await ApiService().getLocations())!;
+    print(_locations);
+    setState(() {});
   }
 
   Future<void> sendRegisterRequest() async {
@@ -40,8 +52,8 @@ class _HomeState extends State<Account> {
         body: jsonEncode({
           "full_name": fullNameController.text,
           "mobile": phoneController.text,
-          "location_id": 1,
-          "gender": "Perempuan",
+          "location_id": selectedLocationId,
+          "gender": selectedGender,
           "password": passwordController.text,
           "is_admin": false
         }));
@@ -133,7 +145,8 @@ class _HomeState extends State<Account> {
           selectedItemColor: const Color.fromRGBO(60, 95, 107, 1),
           onTap: _onItemTapped,
         ),
-        body: Container(
+        body: SingleChildScrollView(
+            child: Container(
           padding: const EdgeInsets.all(20),
           color: const Color.fromRGBO(60, 95, 107, 1),
           child: Container(
@@ -195,6 +208,76 @@ class _HomeState extends State<Account> {
                                         color: Colors.white, width: 2))),
                           ),
                         ),
+
+                        // Location dropdown
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: DropdownButtonFormField<int>(
+                            value: selectedLocationId,
+                            items: _locations?.data.map((location) {
+                                  return DropdownMenuItem<int>(
+                                    value: location.id,
+                                    child: Text(location.name),
+                                  );
+                                }).toList() ??
+                                [],
+                            onChanged: (value) {
+                              setState(() {
+                                selectedLocationId = value!;
+                              });
+                            },
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.location_on),
+                              labelText: 'Lokasi',
+                              hintText: 'Lokasi',
+                              prefixIconColor: Colors.black,
+                              filled: true,
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(color: Colors.black),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Gender dropdown
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: DropdownButtonFormField<String>(
+                            value: selectedGender,
+                            items: ['Laki-Laki', 'Perempuan'].map((gender) {
+                              return DropdownMenuItem<String>(
+                                value: gender,
+                                child: Text(gender),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedGender = value!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: selectedGender == 'Laki-Laki'
+                                  ? const Icon(Icons.male)
+                                  : const Icon(Icons.female),
+                              labelText: 'Jenis Kelamin',
+                              hintText: 'Jenis Kelamin',
+                              prefixIconColor: Colors.black,
+                              filled: true,
+                              fillColor: Colors.white,
+                              labelStyle: const TextStyle(color: Colors.black),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         Container(
                           margin: const EdgeInsets.only(bottom: 20.0),
                           child: TextFormField(
@@ -245,6 +328,6 @@ class _HomeState extends State<Account> {
                           )))
                 ])),
           ),
-        ));
+        )));
   }
 }
