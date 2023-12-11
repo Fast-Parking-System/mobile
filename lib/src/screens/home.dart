@@ -39,17 +39,11 @@ class _HomeState extends State<Home> {
   Future<void> _readToken() async {}
 
   Future<void> _readAll() async {
-    // Read value
     String? token = await storage.read(key: 'token');
     print('token:  $token');
-    // Read all values
+
     Map<String, String> allValues = await storage.readAll();
     print(allValues);
-    // setState(() {
-    //   _items = all.entries
-    //       .map((entry) => _SecItem(entry.key, entry.value))
-    //       .toList(growable: false);
-    // });
   }
 
   void _onItemTapped(int index) {
@@ -87,9 +81,6 @@ class _HomeState extends State<Home> {
             IconButton(
               icon: const Image(image: AssetImage('assets/images/logout.png')),
               onPressed: () async {
-                // Navigate to the logout page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
                 await storage.delete(key: 'token');
                 Navigator.restorablePushNamed(context, Login.routeName);
               },
@@ -120,22 +111,6 @@ class _HomeState extends State<Home> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            // : GridView.count(
-            //         crossAxisCount: 2,
-            //         children: List.generate(_locations!.data.length, (index) {
-            //           return Column(
-            //             children: [
-            //               const Image(image: AssetImage('assets/images/location.png')),
-            //               Center(
-            //                 child: Text(
-            //                   _locations!.data[index].name.toUpperCase(),
-            //                   style: Theme.of(context).textTheme.headlineSmall,
-            //                 ),
-            //               )
-            //             ],
-            //           );
-            //         }),
-            //       ),
             : Container(
                 padding: const EdgeInsets.all(20),
                 color: const Color.fromRGBO(60, 95, 107, 1),
@@ -164,7 +139,7 @@ class _HomeState extends State<Home> {
                             color: Colors.black,
                             fontSize: 50,
                             fontWeight: FontWeight.w500),
-                      ), //<------------
+                      ),
                       Expanded(
                         child: GridView.builder(
                           gridDelegate:
@@ -180,16 +155,15 @@ class _HomeState extends State<Home> {
                               child: Container(
                                 child: InkWell(
                                   onTap: () {
-                                    // Navigate to the settings page. If the user leaves and returns
-                                    // to the app after it has been killed while running in the
-                                    // background, the navigation stack is restored.
                                     Navigator.restorablePushNamed(
-                                        context, AttendantsScreen.routeName);
+                                      context,
+                                      AttendantsScreen.routeName,
+                                      arguments: _locations!.data[index].id,
+                                    );
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      // border: Border.all(color: Colors.black),
                                     ),
                                     child: Column(
                                       crossAxisAlignment:

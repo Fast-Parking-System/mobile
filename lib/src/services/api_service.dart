@@ -73,26 +73,48 @@ class ApiService {
     return null;
   }
 
-  Future<Attendants?> getAttendants() async {
-    try {
-      String? token = await storage.read(key: 'token');
-      var url = Uri.parse(ApiConstants.url + ApiConstants.attendants);
-      var headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-      var response = await http.get(url, headers: headers);
-      if (response.statusCode == 200) {
-        Attendants model = attendantsFromJson(response.body);
-        print(model);
-        return model;
-      }
-    } catch (e) {
-      log(e.toString());
+  Future<Attendants?> getAttendants({String? search, int? locationId}) async {
+  try {
+    String? token = await storage.read(key: 'token');
+    
+    // Build the base URL
+    var url = Uri.parse('${ApiConstants.url}/api/attendants');
+
+    // Add query parameters conditionally
+    Map<String, String> queryParams = {};
+    if (search != null) {
+      queryParams['search'] = search;
     }
-    return null;
+    if (locationId != null) {
+      queryParams['location_id'] = locationId.toString();
+    }
+    if (queryParams.isNotEmpty) {
+      url = Uri(
+        scheme: url.scheme,
+        host: url.host,
+        path: url.path,
+        queryParameters: queryParams,
+      );
+    }
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      Attendants model = attendantsFromJson(response.body);
+      print(model);
+      return model;
+    }
+  } catch (e) {
+    log(e.toString());
   }
+  return null;
+}
 
   Future<WhoAmI?> getWhoAmI() async {
     try {

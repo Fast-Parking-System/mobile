@@ -16,10 +16,10 @@ class AttendantsScreen extends StatefulWidget {
   static const routeName = '/attendants';
 
   @override
-  _HomeState createState() => _HomeState();
+  _AttendantsScreenState createState() => _AttendantsScreenState();
 }
 
-class _HomeState extends State<AttendantsScreen> {
+class _AttendantsScreenState extends State<AttendantsScreen> {
   TextEditingController searchController = TextEditingController();
   late Attendants? _attendants = null;
   final storage = const FlutterSecureStorage();
@@ -29,30 +29,34 @@ class _HomeState extends State<AttendantsScreen> {
   void initState() {
     super.initState();
     _readAll();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     getAttendants();
   }
 
   void getAttendants() async {
-    _attendants = (await ApiService().getAttendants())!;
-    print('attendants');
-    print(_attendants);
+    final dynamic argument = ModalRoute.of(context)?.settings.arguments;
+
+    if (argument is int) {
+      _attendants = await ApiService().getAttendants(
+        locationId: argument,
+      );
+    }
+
     setState(() {});
   }
 
   Future<void> _readToken() async {}
 
   Future<void> _readAll() async {
-    // Read value
     String? token = await storage.read(key: 'token');
     print('token:  $token');
-    // Read all values
+
     Map<String, String> allValues = await storage.readAll();
     print(allValues);
-    // setState(() {
-    //   _items = all.entries
-    //       .map((entry) => _SecItem(entry.key, entry.value))
-    //       .toList(growable: false);
-    // });
   }
 
   void _onItemTapped(int index) {
@@ -90,9 +94,6 @@ class _HomeState extends State<AttendantsScreen> {
             IconButton(
               icon: const Image(image: AssetImage('assets/images/logout.png')),
               onPressed: () async {
-                // Navigate to the logout page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
                 await storage.delete(key: 'token');
                 Navigator.restorablePushNamed(context, Login.routeName);
               },
@@ -123,22 +124,6 @@ class _HomeState extends State<AttendantsScreen> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            // : GridView.count(
-            //         crossAxisCount: 2,
-            //         children: List.generate(_locations!.data.length, (index) {
-            //           return Column(
-            //             children: [
-            //               const Image(image: AssetImage('assets/images/location.png')),
-            //               Center(
-            //                 child: Text(
-            //                   _locations!.data[index].name.toUpperCase(),
-            //                   style: Theme.of(context).textTheme.headlineSmall,
-            //                 ),
-            //               )
-            //             ],
-            //           );
-            //         }),
-            //       ),
             : Container(
                 padding: const EdgeInsets.all(20),
                 color: const Color.fromRGBO(60, 95, 107, 1),
@@ -148,9 +133,6 @@ class _HomeState extends State<AttendantsScreen> {
                       color: Color.fromRGBO(217, 217, 217, 1),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: ListView.builder(
-                    // Providing a restorationId allows the ListView to restore the
-                    // scroll position when a user leaves and returns to the app after it
-                    // has been killed while running in the background.
                     restorationId: 'sampleItemListView',
                     itemCount: _attendants!.data.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -184,15 +166,7 @@ class _HomeState extends State<AttendantsScreen> {
                             width: 100,
                             height: 100,
                           ),
-                          onTap: () {
-                            // Navigate to the details page. If the user leaves and returns to
-                            // the app after it has been killed while running in the
-                            // background, the navigation stack is restored.
-                            // Navigator.restorablePushNamed(
-                            //   context,
-                            //   SampleItemDetailsView.routeName,
-                            // );
-                          });
+                          onTap: () {});
                     },
                   ),
                 ),
