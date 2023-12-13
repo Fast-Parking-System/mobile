@@ -136,135 +136,230 @@ class _HomeState extends State<Profile> {
                   decoration: const BoxDecoration(
                       color: Color.fromRGBO(217, 217, 217, 1),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: SingleChildScrollView(
-                      child: Column(
-                    children: [
-                      const Image(
-                          image: AssetImage('assets/images/avatar.png')),
-                      Text(
-                        "Hi ${_whoami!.data.fullName} !",
-                        style: const TextStyle(
-                            fontSize: 50,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                      ), //<------------
-                      SizedBox(
-                        width: double.infinity,
-                        height: 5,
-                        // height: double.infinity,
-                        child: Container(
-                          color: Colors.black,
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.maxHeight),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Image(
+                                image: AssetImage('assets/images/avatar.png')),
+                            Text(
+                              "Hi ${_whoami!.data.fullName} !",
+                              style: const TextStyle(
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                            SizedBox(
+                              width: double.infinity,
+                              height: 5,
+                              // height: double.infinity,
+                              child: Container(
+                                color: Colors.black,
+                              ),
+                            ),
+                            const Text(
+                              "Info Profile",
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ), //<------------
+                            ListTile(
+                                leading: const CircleAvatar(child: Text('N')),
+                                title: const Text(
+                                  'Nama',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                subtitle: Text(
+                                  _whoami!.data.fullName,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                )),
+                            ListTile(
+                                leading: const CircleAvatar(child: Text('I')),
+                                title: const Text(
+                                  'User ID',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                subtitle: Text(
+                                  _whoami!.data.id,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                )),
+                            ListTile(
+                                leading: const CircleAvatar(child: Text('J')),
+                                title: const Text(
+                                  'Jenis Kelamin',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                subtitle: Text(
+                                  _whoami!.data.gender,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                )),
+                          ],
                         ),
                       ),
-                      const Text(
-                        "Info Profile",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                      ), //<------------
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            margin:
-                                const EdgeInsets.only(left: 10.0, right: 30.0),
-                            decoration: const BoxDecoration(
-                                // color: Color.fromRGBO(131, 130, 130, 1),
-                                color: Color(0xff93A0AE),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
-                          Column(children: [
-                            const Text(
-                              "Nama",
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ), //<------------
-                            Text(
-                              _whoami!.data.fullName,
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ), //<------------
-                          ])
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            margin:
-                                const EdgeInsets.only(left: 10.0, right: 30.0),
-                            decoration: const BoxDecoration(
-                                // color: Color.fromRGBO(131, 130, 130, 1),
-                                color: Color(0xff93A0AE),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
-                          Column(children: [
-                            const Text(
-                              "User ID",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ), //<------------
-                            Text(
-                              _whoami!.data.id,
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ), //<------------
-                          ])
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            margin:
-                                const EdgeInsets.only(left: 10.0, right: 30.0),
-                            decoration: const BoxDecoration(
-                                // color: Color.fromRGBO(131, 130, 130, 1),
-                                color: Color(0xff93A0AE),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
-                          Column(children: [
-                            const Text(
-                              "Jenis Kelamin",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ), //<------------
-                            Text(
-                              _whoami!.data.gender,
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ), //<------------
-                          ])
-                        ],
-                      )
-                    ],
-                  )),
+                    );
+                  }),
                 ),
               ));
   }
 }
+
+            // : Container(
+            //     width: double.infinity,
+            //     padding: const EdgeInsets.all(20),
+            //     color: const Color.fromRGBO(60, 95, 107, 1),
+            //     child: Container(
+            //       padding: const EdgeInsets.all(10),
+            //       decoration: const BoxDecoration(
+            //           color: Color.fromRGBO(217, 217, 217, 1),
+            //           borderRadius: BorderRadius.all(Radius.circular(20))),
+            //       child: SingleChildScrollView(
+            //           child: Column(
+            //         children: [
+            //           const Image(
+            //               image: AssetImage('assets/images/avatar.png')),
+            //           Text(
+            //             "Hi ${_whoami!.data.fullName} !",
+            //             style: const TextStyle(
+            //                 fontSize: 50,
+            //                 fontWeight: FontWeight.w500,
+            //                 color: Colors.black),
+            //           ), //<------------
+            //           SizedBox(
+            //             width: double.infinity,
+            //             height: 5,
+            //             // height: double.infinity,
+            //             child: Container(
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //           const Text(
+            //             "Info Profile",
+            //             style: TextStyle(
+            //                 fontSize: 30,
+            //                 fontWeight: FontWeight.w500,
+            //                 color: Colors.black),
+            //           ), //<------------
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.start,
+            //             textDirection: TextDirection.ltr,
+            //             children: [
+            //               Container(
+            //                 width: 50.0,
+            //                 height: 50.0,
+            //                 margin:
+            //                     const EdgeInsets.only(left: 10.0, right: 30.0),
+            //                 decoration: const BoxDecoration(
+            //                     // color: Color.fromRGBO(131, 130, 130, 1),
+            //                     color: Color(0xff93A0AE),
+            //                     borderRadius:
+            //                         BorderRadius.all(Radius.circular(10))),
+            //               ),
+            //               Column(children: [
+            //                 const Text(
+            //                   "Nama",
+            //                   textAlign: TextAlign.left,
+            //                   style: TextStyle(
+            //                       fontSize: 30,
+            //                       fontWeight: FontWeight.w500,
+            //                       color: Colors.black),
+            //                 ), //<------------
+            //                 Text(
+            //                   _whoami!.data.fullName,
+            //                   style: const TextStyle(
+            //                       fontSize: 30,
+            //                       fontWeight: FontWeight.w500,
+            //                       color: Colors.black),
+            //                 ), //<------------
+            //               ])
+            //             ],
+            //           ),
+            //           const SizedBox(height: 30),
+            //           Row(
+            //             children: [
+            //               Container(
+            //                 width: 50.0,
+            //                 height: 50.0,
+            //                 margin:
+            //                     const EdgeInsets.only(left: 10.0, right: 30.0),
+            //                 decoration: const BoxDecoration(
+            //                     // color: Color.fromRGBO(131, 130, 130, 1),
+            //                     color: Color(0xff93A0AE),
+            //                     borderRadius:
+            //                         BorderRadius.all(Radius.circular(10))),
+            //               ),
+            //               Column(children: [
+            //                 const Text(
+            //                   "User ID",
+            //                   textAlign: TextAlign.left,
+            //                   style: TextStyle(
+            //                       fontSize: 30,
+            //                       fontWeight: FontWeight.w500,
+            //                       color: Colors.black),
+            //                 ), //<------------
+            //                 Text(
+            //                   _whoami!.data.id,
+            //                   textAlign: TextAlign.left,
+            //                   style: const TextStyle(
+            //                       fontSize: 30,
+            //                       fontWeight: FontWeight.w500,
+            //                       color: Colors.black),
+            //                 ), //<------------
+            //               ])
+            //             ],
+            //           ),
+            //           const SizedBox(height: 30),
+            //           Row(
+            //             children: [
+            //               Container(
+            //                 width: 50.0,
+            //                 height: 50.0,
+            //                 margin:
+            //                     const EdgeInsets.only(left: 10.0, right: 30.0),
+            //                 decoration: const BoxDecoration(
+            //                     // color: Color.fromRGBO(131, 130, 130, 1),
+            //                     color: Color(0xff93A0AE),
+            //                     borderRadius:
+            //                         BorderRadius.all(Radius.circular(10))),
+            //               ),
+            //               Column(children: [
+            //                 const Text(
+            //                   "Jenis Kelamin",
+            //                   textAlign: TextAlign.left,
+            //                   style: TextStyle(
+            //                       fontSize: 30,
+            //                       fontWeight: FontWeight.w500,
+            //                       color: Colors.black),
+            //                 ), //<------------
+            //                 Text(
+            //                   _whoami!.data.gender,
+            //                   textAlign: TextAlign.left,
+            //                   style: const TextStyle(
+            //                       fontSize: 30,
+            //                       fontWeight: FontWeight.w500,
+            //                       color: Colors.black),
+            //                 ), //<------------
+            //               ])
+            //             ],
+            //           )
+            //         ],
+            //       )),
+            //     ),
+            //   ));
+//   }

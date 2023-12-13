@@ -137,7 +137,6 @@ class _AttendantsScreenState extends State<AttendantsScreen> {
                     itemCount: _attendants!.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       final item = _attendants?.data[index];
-                      print(item);
 
                       return ListTile(
                           title: Text('${item?.fullName}'.toUpperCase()),
