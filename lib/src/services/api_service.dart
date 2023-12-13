@@ -71,7 +71,30 @@ class ApiService {
     return null;
   }
 
-  Future<Attendants?> getAttendants({String? search, int? locationId}) async {
+  Future<Attendants?> getAttendants() async {
+    try {
+      String? token = await storage.read(key: 'token');
+      print('token from locations:  $token');
+      var url = Uri.parse(ApiConstants.url + ApiConstants.attendants);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      var response = await http.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        Attendants model = attendantsFromJson(response.body);
+        return model;
+      }
+    } catch (e) {
+      log(e.toString());
+      storage.delete(key: 'token');
+    }
+    return null;
+  }
+
+  Future<Attendants?> getAttendantsByParams(
+      {String? search, int? locationId}) async {
     try {
       String? token = await storage.read(key: 'token');
 
@@ -135,7 +158,7 @@ class ApiService {
     return null;
   }
 
-  Future<Analytics?> getAnalytics() async {
+  Future<Analytics?> getAnalytics({userId}) async {
     try {
       String? token = await storage.read(key: 'token');
       String? userId = await storage.read(key: 'userId');
@@ -150,11 +173,11 @@ class ApiService {
       var response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        print('response.body');
-        print(response.body);
+        // print('response.body');
+        // print(response.body);
         Analytics analyticsModel = analyticsFromJson(response.body);
-        print('analyticsModel');
-        print(analyticsModel.data.daily[0]);
+        // print('analyticsModel');
+        // print(analyticsModel.data.daily[0]);
         return analyticsModel;
       }
     } catch (e) {

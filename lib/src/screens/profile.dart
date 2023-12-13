@@ -4,7 +4,8 @@ import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
-import 'package:fast_parking_system/src/screens/wallet.dart';
+import 'package:fast_parking_system/src/screens/wallet_admin_detail.dart';
+import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -149,24 +150,31 @@ class _HomeState extends State<Profile> {
                             Text(
                               "Hi ${_whoami!.data.fullName} !",
                               style: const TextStyle(
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             ), //<------------
-                            SizedBox(
-                              width: double.infinity,
-                              height: 5,
-                              // height: double.infinity,
-                              child: Container(
-                                color: Colors.black,
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 5,
+                                // height: double.infinity,
+                                child: Container(
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-                            const Text(
-                              "Info Profile",
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              child: const Text(
+                                "Info Profile",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
                             ), //<------------
                             ListTile(
                                 leading: const CircleAvatar(child: Text('N')),
@@ -178,7 +186,7 @@ class _HomeState extends State<Profile> {
                                 ),
                                 subtitle: Text(
                                   _whoami!.data.fullName,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.normal,
                                       color: Colors.black),
                                 )),
@@ -192,7 +200,7 @@ class _HomeState extends State<Profile> {
                                 ),
                                 subtitle: Text(
                                   _whoami!.data.id,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.normal,
                                       color: Colors.black),
                                 )),
@@ -206,10 +214,25 @@ class _HomeState extends State<Profile> {
                                 ),
                                 subtitle: Text(
                                   _whoami!.data.gender,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.normal,
                                       color: Colors.black),
                                 )),
+                            if (isAdmin == 'false')
+                              ListTile(
+                                  leading: Image.asset('assets/images/location.png', width: 40,),
+                                  title: const Text(
+                                    'Lokasi Bekerja',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  subtitle: Text(
+                                    _whoami!.data.location,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black),
+                                  ))
                           ],
                         ),
                       ),

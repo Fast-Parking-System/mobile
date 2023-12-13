@@ -6,30 +6,30 @@ import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/screens/wallet_admin_detail.dart';
-import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AttendantsScreen extends StatefulWidget {
-  const AttendantsScreen({Key? key}) : super(key: key);
+class Wallet extends StatefulWidget {
+  const Wallet({Key? key}) : super(key: key);
 
-  static const routeName = '/attendants';
+  static const routeName = '/wallet';
 
   @override
-  _AttendantsScreenState createState() => _AttendantsScreenState();
+  _WalletState createState() => _WalletState();
 }
 
-class _AttendantsScreenState extends State<AttendantsScreen> {
+class _WalletState extends State<Wallet> {
   TextEditingController searchController = TextEditingController();
   late Attendants? _attendants = null;
   final storage = const FlutterSecureStorage();
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
     super.initState();
     _readAll();
+    getAttendants();
   }
 
   @override
@@ -39,20 +39,14 @@ class _AttendantsScreenState extends State<AttendantsScreen> {
   }
 
   void getAttendants() async {
-    final dynamic argument = ModalRoute.of(context)?.settings.arguments;
-
-    if (argument is int) {
-      _attendants = await ApiService().getAttendantsByParams(
-        locationId: argument,
-      );
-    }
-
+    _attendants = (await ApiService().getAttendants())!;
     setState(() {});
   }
 
   Future<void> _readToken() async {}
 
   Future<void> _readAll() async {
+    print('wallet attendants list');
     String? token = await storage.read(key: 'token');
     print('token:  $token');
 
@@ -144,7 +138,7 @@ class _AttendantsScreenState extends State<AttendantsScreen> {
                           titleTextStyle: const TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                           leading: Image.asset(
-                            'assets/images/avatar.png',
+                            'assets/images/money.png',
                             height: 100,
                           ),
                           subtitle: Column(
@@ -161,12 +155,13 @@ class _AttendantsScreenState extends State<AttendantsScreen> {
                               ),
                             ],
                           ),
-                          trailing: Image.memory(
-                            base64Decode(item!.qrCode),
-                            width: 100,
-                            height: 100,
-                          ),
-                          onTap: () {});
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        WalletDetail(fullName: item!.fullName, userId: item!.id)));
+                          });
                     },
                   ),
                 ),

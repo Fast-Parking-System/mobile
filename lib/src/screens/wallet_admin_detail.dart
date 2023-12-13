@@ -3,20 +3,24 @@ import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
+import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class Wallet extends StatefulWidget {
-  const Wallet({Key? key}) : super(key: key);
+class WalletDetail extends StatefulWidget {
+  final String userId;
+  final String fullName;
+  const WalletDetail({Key? key, required this.fullName, required this.userId})
+      : super(key: key);
 
-  static const routeName = '/wallet';
+  static const routeName = '/wallet-detail';
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Wallet> {
+class _HomeState extends State<WalletDetail> {
   TextEditingController searchController = TextEditingController();
   late Analytics? _analytics = null;
   final storage = const FlutterSecureStorage();
@@ -29,7 +33,8 @@ class _HomeState extends State<Wallet> {
   }
 
   void getAnalytics() async {
-    _analytics = (await ApiService().getAnalytics())!;
+    _analytics = (await ApiService().getAnalytics(userId: widget.userId))!;
+    // print('_analytics ${_analytics}');
     setState(() {});
   }
 
@@ -102,6 +107,7 @@ class _HomeState extends State<Wallet> {
               )
             : Container(
                 width: double.infinity,
+                height: double.infinity,
                 padding: const EdgeInsets.all(20),
                 color: const Color.fromRGBO(60, 95, 107, 1),
                 child: Container(
@@ -115,13 +121,13 @@ class _HomeState extends State<Wallet> {
                       child: Column(
                         children: [
                           // Daily Analytics
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Daily Analytics',
+                                  'Nama: ${widget.fullName}, ID: ${widget.userId}',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,

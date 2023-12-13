@@ -3,7 +3,7 @@ import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/attendants.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
-import 'package:fast_parking_system/src/screens/wallet.dart';
+import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
