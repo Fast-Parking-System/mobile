@@ -1,5 +1,7 @@
 import 'package:fast_parking_system/src/models/analytics_model.dart';
+import 'package:fast_parking_system/src/models/whoami_model.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
+import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
@@ -8,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class WalletAttendant extends StatefulWidget {
-  const WalletAttendant({Key? key}) : super(key: key);
+  final String userId;
+  const WalletAttendant({Key? key, required this.userId}) : super(key: key);
 
   static const routeName = '/wallet_attendant';
 
@@ -18,6 +21,7 @@ class WalletAttendant extends StatefulWidget {
 
 class _HomeState extends State<WalletAttendant> {
   TextEditingController searchController = TextEditingController();
+  late WhoAmI? _whoami = null;
   late Analytics? _analytics = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 2;
@@ -28,8 +32,14 @@ class _HomeState extends State<WalletAttendant> {
     getAnalytics();
   }
 
+  void getWhoAmI() async {
+    _whoami = (await ApiService().getWhoAmI())!;
+    print(_whoami);
+    setState(() {});
+  }
+
   void getAnalytics() async {
-    _analytics = (await ApiService().getAnalytics())!;
+    _analytics = (await ApiService().getAnalytics(userId: widget.userId))!;
     setState(() {});
   }
 
@@ -39,13 +49,17 @@ class _HomeState extends State<WalletAttendant> {
     });
     switch (index) {
       case 0:
-        Navigator.restorablePushNamed(context, Home.routeName);
+        Navigator.restorablePushNamed(context, HomeAttendant.routeName);
         break;
       case 1:
         Navigator.restorablePushNamed(context, QRCode.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, WalletAttendant.routeName);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    WalletAttendant(userId: _whoami!.data.id)));
         break;
       case 3:
         Navigator.restorablePushNamed(context, Profile.routeName);
@@ -83,8 +97,8 @@ class _HomeState extends State<WalletAttendant> {
                 icon: Image(image: AssetImage('assets/images/home.png')),
                 label: 'Account'),
             BottomNavigationBarItem(
-                icon: Image(image: AssetImage('assets/images/account.png')),
-                label: 'Add Account'),
+                icon: Image(image: AssetImage('assets/images/qr.png')),
+                label: 'QR Code'),
             BottomNavigationBarItem(
                 icon: Image(image: AssetImage('assets/images/wallet.png')),
                 label: 'Wallet'),
@@ -102,6 +116,7 @@ class _HomeState extends State<WalletAttendant> {
               )
             : Container(
                 width: double.infinity,
+                height: double.infinity,
                 padding: const EdgeInsets.all(20),
                 color: const Color.fromRGBO(60, 95, 107, 1),
                 child: Container(

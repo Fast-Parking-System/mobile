@@ -101,8 +101,8 @@ class MyApp extends StatelessWidget {
                   case SampleItemListView.routeName:
                   case HomeAttendant.routeName:
                     return const HomeAttendant();
-                  case WalletAttendant.routeName:
-                    return const WalletAttendant();
+                  // case WalletAttendant.routeName:
+                  //   return const WalletAttendant();
                   // case AttendantAdded.routeName:
                   //   return const AttendantAdded();
                   default:

@@ -6,6 +6,7 @@ import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/wallet_admin_detail.dart';
 import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
+import 'package:fast_parking_system/src/screens/wallet_attendant.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -58,6 +59,7 @@ class _HomeState extends State<Profile> {
     setState(() {
       _selectedIndex = index;
     });
+    print('isAdmin => $isAdmin');
     switch (index) {
       case 0:
         isAdmin == 'true'
@@ -70,7 +72,13 @@ class _HomeState extends State<Profile> {
             : Navigator.restorablePushNamed(context, QRCode.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, Wallet.routeName);
+        isAdmin == 'true'
+            ? Navigator.restorablePushNamed(context, Wallet.routeName)
+            : Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        WalletAttendant(userId: _whoami!.data.id)));
         break;
       case 3:
         Navigator.restorablePushNamed(context, Profile.routeName);
@@ -220,7 +228,10 @@ class _HomeState extends State<Profile> {
                                 )),
                             if (isAdmin == 'false')
                               ListTile(
-                                  leading: Image.asset('assets/images/location.png', width: 40,),
+                                  leading: Image.asset(
+                                    'assets/images/location.png',
+                                    width: 40,
+                                  ),
                                   title: const Text(
                                     'Lokasi Bekerja',
                                     style: TextStyle(

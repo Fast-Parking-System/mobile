@@ -47,7 +47,11 @@ class _HomeState extends State<QRCode> {
         Navigator.restorablePushNamed(context, QRCode.routeName);
         break;
       case 2:
-        Navigator.restorablePushNamed(context, WalletAttendant.routeName);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    WalletAttendant(userId: _whoami!.data.id)));
         break;
       case 3:
         Navigator.restorablePushNamed(context, Profile.routeName);

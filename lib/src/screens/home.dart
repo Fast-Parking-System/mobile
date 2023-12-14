@@ -133,12 +133,15 @@ class _HomeState extends State<Home> {
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white))),
                       ),
-                      const Text(
-                        "Hi Admin!",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 50,
-                            fontWeight: FontWeight.w500),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        child: const Text(
+                          "Hi Admin!",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                       Expanded(
                         child: GridView.builder(
@@ -174,8 +177,8 @@ class _HomeState extends State<Home> {
                                         Image.asset(
                                           'assets/images/location.png',
                                           fit: BoxFit.cover,
-                                          height: 60,
-                                          width: 60,
+                                          height: 50,
+                                          width: 50,
                                         ),
                                         const SizedBox(
                                           height: 5,

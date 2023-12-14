@@ -113,15 +113,39 @@ class _HomeState extends State<AttendantAdded> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const Image(
+                          image: AssetImage('assets/images/avatar.png')),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20.0),
+                        child: Text(
+                          _attendantDetail!.data.fullName,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                       Container(
                         margin: const EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           "Lokasi ${_attendantDetail!.data.location}",
                           style: const TextStyle(
                             color: Colors.black,
-                            fontSize: 30,
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20.0),
+                        child: Text(
+                          "User ID ${_attendantDetail!.data.id}",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
@@ -129,7 +153,7 @@ class _HomeState extends State<AttendantAdded> {
                       Image.memory(
                         base64Decode(_attendantDetail!.data.qrCode),
                         width: double.infinity,
-                        height: 400,
+                        height: 200,
                       ),
                     ],
                   ),

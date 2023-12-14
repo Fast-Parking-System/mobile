@@ -161,7 +161,6 @@ class ApiService {
   Future<Analytics?> getAnalytics({userId}) async {
     try {
       String? token = await storage.read(key: 'token');
-      String? userId = await storage.read(key: 'userId');
 
       var url =
           Uri.parse('${ApiConstants.url}/api/attendants/$userId/analytics');
