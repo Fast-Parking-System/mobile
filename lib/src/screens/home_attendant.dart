@@ -34,13 +34,13 @@ class _HomeState extends State<HomeAttendant> {
 
   void getWhoAmI() async {
     _whoami = (await ApiService().getWhoAmI())!;
-    print(_whoami);
+    // print(_whoami);
     setState(() {});
   }
 
   void getLocations() async {
     _locations = (await ApiService().getLocations())!;
-    print(_locations);
+    // print(_locations);
     setState(() {});
   }
 
@@ -49,10 +49,10 @@ class _HomeState extends State<HomeAttendant> {
   Future<void> _readAll() async {
     // Read value
     String? token = await storage.read(key: 'token');
-    print('token:  $token');
+    // print('token:  $token');
     // Read all values
     Map<String, String> allValues = await storage.readAll();
-    print(allValues);
+    // print(allValues);
     // setState(() {
     //   _items = all.entries
     //       .map((entry) => _SecItem(entry.key, entry.value))
