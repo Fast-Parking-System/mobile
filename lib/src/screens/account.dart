@@ -213,6 +213,7 @@ class _HomeState extends State<Account> {
                         Container(
                           margin: const EdgeInsets.only(bottom: 20.0),
                           child: DropdownButtonFormField<int>(
+                            style: const TextStyle(color: Colors.black),
                             value: selectedLocationId,
                             items: _locations?.data.map((location) {
                                   return DropdownMenuItem<int>(
@@ -247,6 +248,7 @@ class _HomeState extends State<Account> {
                         Container(
                           margin: const EdgeInsets.only(bottom: 20.0),
                           child: DropdownButtonFormField<String>(
+                            style: const TextStyle(color: Colors.black),
                             value: selectedGender,
                             items: ['Laki-Laki', 'Perempuan'].map((gender) {
                               return DropdownMenuItem<String>(
