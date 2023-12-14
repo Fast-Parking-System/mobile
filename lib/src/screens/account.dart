@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:fast_parking_system/src/constants.dart';
 import 'package:fast_parking_system/src/models/register_model.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
+import 'package:fast_parking_system/src/screens/attendant_added.dart';
 import 'package:fast_parking_system/src/models/locations_model.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
-import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
-import 'package:fast_parking_system/src/screens/wallet_admin_detail.dart';
 import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -63,13 +62,17 @@ class _HomeState extends State<Account> {
       // var data = json.decode(response.body.toString());
       Register model = registerFromJson(response.body);
 
-      // Save auth/login data to storage
-      // await storage.write(key: 'token', value: data['data']['token']);
+      int userId = int.tryParse(model.data.userId) ?? 0;
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Create Account Success! User Id = ${model.data.userId}"),
-      ));
-      // Navigator.restorablePushNamed(context, Home.routeName);
+      // Navigator.pushNamed(
+      //   context,
+      //   AttendantAdded.routeName,
+      //   arguments: userId,
+      // );
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AttendantAdded(userId: userId)));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Create Account Failed"),

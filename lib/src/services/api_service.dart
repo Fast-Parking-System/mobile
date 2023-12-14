@@ -185,4 +185,35 @@ class ApiService {
     }
     return null;
   }
+
+  Future<WhoAmI?> getAttendantDetail({userId}) async {
+    try {
+      String? token = await storage.read(key: 'token');
+
+      var url = Uri.parse('${ApiConstants.url}/api/attendants/$userId');
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      var response = await http.get(url, headers: headers);
+
+      print("response.statusCode");
+      print(response.statusCode);
+
+      print("response.body");
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        print("before parse result");
+        WhoAmI model = whoAmIFromJson(response.body);
+        print("parse result");
+        print(model);
+        return model;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
 }

@@ -35,12 +35,6 @@ class MyApp extends StatelessWidget {
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
 
-    checkToken() async {
-      String? token = await storage.read(key: 'token');
-      print('token app:  $token');
-      return token != null ? true : false;
-    }
-
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -109,6 +103,8 @@ class MyApp extends StatelessWidget {
                     return const HomeAttendant();
                   case WalletAttendant.routeName:
                     return const WalletAttendant();
+                  // case AttendantAdded.routeName:
+                  //   return const AttendantAdded();
                   default:
                     return const Login();
                 }
