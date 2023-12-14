@@ -34,19 +34,19 @@ class _LoginState extends State<Login> {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body.toString());
-      print(data['data']);
+      // print(data['data']);
 
       // save token
       await storage.write(key: 'token', value: data['data']['token']);
 
       // save is_admin
       bool isAdmin = data['data']['is_admin'];
-      print(isAdmin.toString());
+      // print(isAdmin.toString());
       await storage.write(key: 'isAdmin', value: isAdmin.toString());
 
       // save user_id
       int userId = data['data']['user_id'];
-      print(userId.toString());
+      // print(userId.toString());
       await storage.write(key: 'userId', value: userId.toString());
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -46,12 +46,12 @@ class _WalletState extends State<Wallet> {
   Future<void> _readToken() async {}
 
   Future<void> _readAll() async {
-    print('wallet attendants list');
+    // print('wallet attendants list');
     String? token = await storage.read(key: 'token');
-    print('token:  $token');
+    // print('token:  $token');
 
     Map<String, String> allValues = await storage.readAll();
-    print(allValues);
+    // print(allValues);
   }
 
   void _onItemTapped(int index) {

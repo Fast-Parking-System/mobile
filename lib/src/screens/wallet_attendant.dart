@@ -34,7 +34,7 @@ class _HomeState extends State<WalletAttendant> {
 
   void getWhoAmI() async {
     _whoami = (await ApiService().getWhoAmI())!;
-    print(_whoami);
+    // print(_whoami);
     setState(() {});
   }
 

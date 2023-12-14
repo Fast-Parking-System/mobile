@@ -36,18 +36,18 @@ class _HomeState extends State<Profile> {
 
   void getWhoAmI() async {
     _whoami = (await ApiService().getWhoAmI())!;
-    print(_whoami);
+    // print(_whoami);
     setState(() {});
   }
 
   Future<void> _readAll() async {
     // Read value
     String? token = await storage.read(key: 'token');
-    print('token:  $token');
+    // print('token:  $token');
     isAdmin = (await storage.read(key: 'isAdmin'))!;
     // Read all values
     Map<String, String> allValues = await storage.readAll();
-    print(allValues);
+    // print(allValues);
     // setState(() {
     //   _items = all.entries
     //       .map((entry) => _SecItem(entry.key, entry.value))
@@ -59,7 +59,7 @@ class _HomeState extends State<Profile> {
     setState(() {
       _selectedIndex = index;
     });
-    print('isAdmin => $isAdmin');
+    // print('isAdmin => $isAdmin');
     switch (index) {
       case 0:
         isAdmin == 'true'

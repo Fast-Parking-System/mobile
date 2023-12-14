@@ -29,7 +29,7 @@ class ApiService {
   Future<Locations?> getLocations() async {
     try {
       String? token = await storage.read(key: 'token');
-      print('token from locations:  $token');
+      // print('token from locations:  $token');
       var url = Uri.parse(ApiConstants.url + ApiConstants.locations);
       var headers = {
         'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ class ApiService {
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
         Locations model = locationsFromJson(response.body);
-        print(model);
+        // print(model);
         return model;
       }
     } catch (e) {
@@ -74,7 +74,7 @@ class ApiService {
   Future<Attendants?> getAttendants() async {
     try {
       String? token = await storage.read(key: 'token');
-      print('token from locations:  $token');
+      // print('token from locations:  $token');
       var url = Uri.parse(ApiConstants.url + ApiConstants.attendants);
       var headers = {
         'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         Attendants model = attendantsFromJson(response.body);
-        print(model);
+        // print(model);
         return model;
       }
     } catch (e) {
@@ -140,7 +140,7 @@ class ApiService {
   Future<WhoAmI?> getWhoAmI() async {
     try {
       String? token = await storage.read(key: 'token');
-      print('token from locations:  $token');
+      // print('token from locations:  $token');
       var url = Uri.parse(ApiConstants.url + ApiConstants.whoami);
       var headers = {
         'Content-Type': 'application/json',
@@ -197,17 +197,17 @@ class ApiService {
       };
       var response = await http.get(url, headers: headers);
 
-      print("response.statusCode");
-      print(response.statusCode);
+      // print("response.statusCode");
+      // print(response.statusCode);
 
-      print("response.body");
-      print(response.body);
+      // print("response.body");
+      // print(response.body);
 
       if (response.statusCode == 200) {
-        print("before parse result");
+        // print("before parse result");
         WhoAmI model = whoAmIFromJson(response.body);
-        print("parse result");
-        print(model);
+        // print("parse result");
+        // print(model);
         return model;
       }
     } catch (e) {

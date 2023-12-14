@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
 
   void getLocations() async {
     _locations = (await ApiService().getLocations())!;
-    print(_locations);
+    // print(_locations);
     setState(() {});
   }
 
@@ -40,10 +40,10 @@ class _HomeState extends State<Home> {
 
   Future<void> _readAll() async {
     String? token = await storage.read(key: 'token');
-    print('token:  $token');
+    // print('token:  $token');
 
     Map<String, String> allValues = await storage.readAll();
-    print(allValues);
+    // print(allValues);
   }
 
   void _onItemTapped(int index) {
