@@ -54,10 +54,10 @@ class _AttendantsScreenState extends State<AttendantsScreen> {
 
   Future<void> _readAll() async {
     String? token = await storage.read(key: 'token');
-    print('token:  $token');
+    // print('token:  $token');
 
     Map<String, String> allValues = await storage.readAll();
-    print(allValues);
+    // print(allValues);
   }
 
   void _onItemTapped(int index) {

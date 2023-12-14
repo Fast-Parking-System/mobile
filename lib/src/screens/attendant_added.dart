@@ -32,8 +32,8 @@ class _HomeState extends State<AttendantAdded> {
   void getAttendantDetail() async {
     _attendantDetail =
         (await ApiService().getAttendantDetail(userId: widget.userId))!;
-    print("_attendantDetail");
-    print(_attendantDetail);
+    // print("_attendantDetail");
+    // print(_attendantDetail);
     if (mounted) {
       setState(() {});
     }

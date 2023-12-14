@@ -41,7 +41,7 @@ class _HomeState extends State<Account> {
 
   void getLocations() async {
     _locations = (await ApiService().getLocations())!;
-    print(_locations);
+    // print(_locations);
     setState(() {});
   }
 
