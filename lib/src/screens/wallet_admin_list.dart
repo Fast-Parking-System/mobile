@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fast_parking_system/src/models/attendants_model.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
@@ -28,7 +26,6 @@ class _WalletState extends State<Wallet> {
   @override
   void initState() {
     super.initState();
-    _readAll();
     getAttendants();
   }
 
@@ -41,17 +38,6 @@ class _WalletState extends State<Wallet> {
   void getAttendants() async {
     _attendants = (await ApiService().getAttendants())!;
     setState(() {});
-  }
-
-  Future<void> _readToken() async {}
-
-  Future<void> _readAll() async {
-    // print('wallet attendants list');
-    String? token = await storage.read(key: 'token');
-    // print('token:  $token');
-
-    Map<String, String> allValues = await storage.readAll();
-    // print(allValues);
   }
 
   void _onItemTapped(int index) {
@@ -159,8 +145,9 @@ class _WalletState extends State<Wallet> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        WalletDetail(fullName: item!.fullName, userId: item!.id)));
+                                    builder: (context) => WalletDetail(
+                                        fullName: item!.fullName,
+                                        userId: item.id)));
                           });
                     },
                   ),

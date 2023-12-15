@@ -5,7 +5,6 @@ import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
-import 'package:fast_parking_system/src/screens/wallet_admin_detail.dart';
 import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,6 @@ class _AttendantsScreenState extends State<AttendantsScreen> {
   @override
   void initState() {
     super.initState();
-    _readAll();
   }
 
   @override
@@ -48,16 +46,6 @@ class _AttendantsScreenState extends State<AttendantsScreen> {
     }
 
     setState(() {});
-  }
-
-  Future<void> _readToken() async {}
-
-  Future<void> _readAll() async {
-    String? token = await storage.read(key: 'token');
-    // print('token:  $token');
-
-    Map<String, String> allValues = await storage.readAll();
-    // print(allValues);
   }
 
   void _onItemTapped(int index) {

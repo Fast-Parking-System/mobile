@@ -27,7 +27,6 @@ class _HomeState extends State<HomeAttendant> {
   @override
   void initState() {
     super.initState();
-    _readAll();
     getLocations();
     getWhoAmI();
   }
@@ -45,20 +44,6 @@ class _HomeState extends State<HomeAttendant> {
   }
 
   Future<void> _readToken() async {}
-
-  Future<void> _readAll() async {
-    // Read value
-    String? token = await storage.read(key: 'token');
-    // print('token:  $token');
-    // Read all values
-    Map<String, String> allValues = await storage.readAll();
-    // print(allValues);
-    // setState(() {
-    //   _items = all.entries
-    //       .map((entry) => _SecItem(entry.key, entry.value))
-    //       .toList(growable: false);
-    // });
-  }
 
   void _onItemTapped(int index) {
     setState(() {

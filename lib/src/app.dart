@@ -6,7 +6,6 @@ import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
 import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
-import 'package:fast_parking_system/src/screens/wallet_attendant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

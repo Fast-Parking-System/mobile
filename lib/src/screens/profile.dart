@@ -4,7 +4,6 @@ import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
 import 'package:fast_parking_system/src/screens/qr_code.dart';
-import 'package:fast_parking_system/src/screens/wallet_admin_detail.dart';
 import 'package:fast_parking_system/src/screens/wallet_admin_list.dart';
 import 'package:fast_parking_system/src/screens/wallet_attendant.dart';
 import 'package:fast_parking_system/src/services/api_service.dart';
@@ -30,7 +29,6 @@ class _HomeState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    _readAll();
     getWhoAmI();
   }
 
@@ -38,21 +36,6 @@ class _HomeState extends State<Profile> {
     _whoami = (await ApiService().getWhoAmI())!;
     // print(_whoami);
     setState(() {});
-  }
-
-  Future<void> _readAll() async {
-    // Read value
-    String? token = await storage.read(key: 'token');
-    // print('token:  $token');
-    isAdmin = (await storage.read(key: 'isAdmin'))!;
-    // Read all values
-    Map<String, String> allValues = await storage.readAll();
-    // print(allValues);
-    // setState(() {
-    //   _items = all.entries
-    //       .map((entry) => _SecItem(entry.key, entry.value))
-    //       .toList(growable: false);
-    // });
   }
 
   void _onItemTapped(int index) {
