@@ -29,8 +29,8 @@ class _HomeState extends State<Home> {
     getLocations();
   }
 
-  void getLocations() async {
-    _locations = (await ApiService().getLocations())!;
+  void getLocations({String? search}) async {
+    _locations = (await ApiService().getLocations(search: search))!;
     setState(() {});
   }
 
@@ -112,6 +112,9 @@ class _HomeState extends State<Home> {
                       TextFormField(
                         controller: searchController,
                         textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          getLocations(search: value);
+                        },
                         decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(2.0),
                             hintText: 'Search',

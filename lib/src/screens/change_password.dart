@@ -70,7 +70,7 @@ class _ChangePasswordState extends State<ChangePasswordScreen> {
                     controller: oldPasswordController,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.person_outline_outlined),
+                        prefixIcon: Icon(Icons.fingerprint),
                         prefixIconColor: Colors.white,
                         fillColor: Colors.white,
                         labelText: 'Old Password',

@@ -14,10 +14,12 @@ const storage = FlutterSecureStorage();
 class ApiService {
   final storage = const FlutterSecureStorage();
 
-  Future<Locations?> getLocations() async {
+  Future<Locations?> getLocations({String? search}) async {
     try {
       String? token = await storage.read(key: 'token');
-      var url = Uri.parse(ApiConstants.url + ApiConstants.locations);
+      var url = Uri.parse(ApiConstants.url +
+          ApiConstants.locations +
+          (search != null && search.isNotEmpty ? '?search=$search' : ''));
       var headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -30,7 +32,6 @@ class ApiService {
       }
     } catch (e) {
       log(e.toString());
-      storage.delete(key: 'token');
     }
     return null;
   }
@@ -71,7 +72,6 @@ class ApiService {
       }
     } catch (e) {
       log(e.toString());
-      storage.delete(key: 'token');
     }
     return null;
   }
