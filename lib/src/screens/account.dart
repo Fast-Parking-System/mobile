@@ -41,7 +41,6 @@ class _HomeState extends State<Account> {
 
   void getLocations() async {
     _locations = (await ApiService().getLocations())!;
-    // print(_locations);
     setState(() {});
   }
 
@@ -59,16 +58,10 @@ class _HomeState extends State<Account> {
         }));
 
     if (response.statusCode == 200) {
-      // var data = json.decode(response.body.toString());
       Register model = registerFromJson(response.body);
 
       int userId = int.tryParse(model.data.userId) ?? 0;
 
-      // Navigator.pushNamed(
-      //   context,
-      //   AttendantAdded.routeName,
-      //   arguments: userId,
-      // );
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -117,9 +110,6 @@ class _HomeState extends State<Account> {
             IconButton(
               icon: const Image(image: AssetImage('assets/images/logout.png')),
               onPressed: () async {
-                // Navigate to the logout page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
                 await storage.delete(key: 'token');
                 Navigator.restorablePushNamed(context, Login.routeName);
               },
@@ -208,8 +198,6 @@ class _HomeState extends State<Account> {
                                         color: Colors.white, width: 2))),
                           ),
                         ),
-
-                        // Location dropdown
                         Container(
                           margin: const EdgeInsets.only(bottom: 20.0),
                           child: DropdownButtonFormField<int>(
@@ -244,7 +232,6 @@ class _HomeState extends State<Account> {
                             ),
                           ),
                         ),
-                        // Gender dropdown
                         Container(
                           margin: const EdgeInsets.only(bottom: 20.0),
                           child: DropdownButtonFormField<String>(
@@ -300,12 +287,6 @@ class _HomeState extends State<Account> {
                       ],
                     ),
                   )),
-                  // Text(
-                  //   "User ID".toUpperCase(),
-                  //   style: const TextStyle(color: Colors.white, fontSize: 22),
-                  // ),
-                  // Text('Password'.toUpperCase(),
-                  //     style: const TextStyle(color: Colors.white, fontSize: 22)),
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       child: ElevatedButton(
@@ -318,12 +299,6 @@ class _HomeState extends State<Account> {
                               side: const BorderSide(
                                   color: Colors.white, width: 2)),
                           onPressed: sendRegisterRequest,
-                          // onPressed: () {
-                          //   // Navigate to the settings page. If the user leaves and returns
-                          //   // to the app after it has been killed while running in the
-                          //   // background, the navigation stack is restored.
-                          //   Navigator.restorablePushNamed(context, Home.routeName);
-                          // },
                           child: Text(
                             'Create'.toUpperCase(),
                             style: const TextStyle(color: Colors.white),

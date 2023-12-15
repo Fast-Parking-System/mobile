@@ -31,7 +31,6 @@ class _HomeState extends State<QRCode> {
 
   void getWhoAmI() async {
     _whoami = (await ApiService().getWhoAmI())!;
-    // print(_whoami);
     setState(() {});
   }
 

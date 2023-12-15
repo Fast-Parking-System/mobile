@@ -1,5 +1,6 @@
 import 'package:fast_parking_system/src/screens/account.dart';
 import 'package:fast_parking_system/src/screens/attendants.dart';
+import 'package:fast_parking_system/src/screens/change_password.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
@@ -100,8 +101,8 @@ class MyApp extends StatelessWidget {
                   case SampleItemListView.routeName:
                   case HomeAttendant.routeName:
                     return const HomeAttendant();
-                  // case WalletAttendant.routeName:
-                  //   return const WalletAttendant();
+                  case ChangePasswordScreen.routeName:
+                    return const ChangePasswordScreen();
                   // case AttendantAdded.routeName:
                   //   return const AttendantAdded();
                   default:

@@ -1,10 +1,11 @@
 import 'dart:developer';
+import 'dart:convert';
 import 'package:fast_parking_system/src/constants.dart';
 import 'package:fast_parking_system/src/models/analytics_model.dart';
 import 'package:fast_parking_system/src/models/attendants_model.dart';
 import 'package:fast_parking_system/src/models/locations_model.dart';
-import 'package:fast_parking_system/src/models/pokemon_model.dart';
 import 'package:fast_parking_system/src/models/whoami_model.dart';
+import 'package:fast_parking_system/src/models/change_password_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,24 +13,10 @@ const storage = FlutterSecureStorage();
 
 class ApiService {
   final storage = const FlutterSecureStorage();
-  Future<Pokemon?> getPokemons() async {
-    try {
-      var url = Uri.parse(ApiConstants.baseUrl + ApiConstants.pokemonEndpoint);
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        Pokemon model = pokemonFromJson(response.body);
-        return model;
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    return null;
-  }
 
   Future<Locations?> getLocations() async {
     try {
       String? token = await storage.read(key: 'token');
-      // print('token from locations:  $token');
       var url = Uri.parse(ApiConstants.url + ApiConstants.locations);
       var headers = {
         'Content-Type': 'application/json',
@@ -39,7 +26,6 @@ class ApiService {
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
         Locations model = locationsFromJson(response.body);
-        // print(model);
         return model;
       }
     } catch (e) {
@@ -50,10 +36,8 @@ class ApiService {
   }
 
   Future<Locations?> getLocationsBySearch() async {
-    // TODO: for getting location by search param
     try {
       String? token = await storage.read(key: 'token');
-      print('token from locations:  $token');
       var url = Uri.parse(ApiConstants.url + ApiConstants.locations);
       var headers = {
         'Content-Type': 'application/json',
@@ -74,7 +58,6 @@ class ApiService {
   Future<Attendants?> getAttendants() async {
     try {
       String? token = await storage.read(key: 'token');
-      // print('token from locations:  $token');
       var url = Uri.parse(ApiConstants.url + ApiConstants.attendants);
       var headers = {
         'Content-Type': 'application/json',
@@ -98,10 +81,8 @@ class ApiService {
     try {
       String? token = await storage.read(key: 'token');
 
-      // Build the base URL
       var url = Uri.parse('${ApiConstants.url}/api/attendants');
 
-      // Add query parameters conditionally
       Map<String, String> queryParams = {};
       if (search != null) {
         queryParams['search'] = search;
@@ -128,7 +109,6 @@ class ApiService {
 
       if (response.statusCode == 200) {
         Attendants model = attendantsFromJson(response.body);
-        // print(model);
         return model;
       }
     } catch (e) {
@@ -140,7 +120,6 @@ class ApiService {
   Future<WhoAmI?> getWhoAmI() async {
     try {
       String? token = await storage.read(key: 'token');
-      // print('token from locations:  $token');
       var url = Uri.parse(ApiConstants.url + ApiConstants.whoami);
       var headers = {
         'Content-Type': 'application/json',
@@ -172,11 +151,7 @@ class ApiService {
       var response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        // print('response.body');
-        // print(response.body);
         Analytics analyticsModel = analyticsFromJson(response.body);
-        // print('analyticsModel');
-        // print(analyticsModel.data.daily[0]);
         return analyticsModel;
       }
     } catch (e) {
@@ -197,18 +172,42 @@ class ApiService {
       };
       var response = await http.get(url, headers: headers);
 
-      // print("response.statusCode");
-      // print(response.statusCode);
+      if (response.statusCode == 200) {
+        WhoAmI model = whoAmIFromJson(response.body);
+        return model;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
 
-      // print("response.body");
-      // print(response.body);
+  Future<ChangePassword?> sendChangePasswordRequest({
+    required String oldPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) async {
+    try {
+      String? token = await storage.read(key: 'token');
+
+      var url = Uri.parse(ApiConstants.url + ApiConstants.changePassword);
+      var headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      };
+
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode({
+          "old_password": oldPassword,
+          "new_password": newPassword,
+          "confirm_new_password": confirmNewPassword,
+        }),
+      );
 
       if (response.statusCode == 200) {
-        // print("before parse result");
-        WhoAmI model = whoAmIFromJson(response.body);
-        // print("parse result");
-        // print(model);
-        return model;
+        return ChangePassword.fromJson(json.decode(response.body));
       }
     } catch (e) {
       log(e.toString());

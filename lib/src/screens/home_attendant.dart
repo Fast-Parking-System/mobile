@@ -33,13 +33,11 @@ class _HomeState extends State<HomeAttendant> {
 
   void getWhoAmI() async {
     _whoami = (await ApiService().getWhoAmI())!;
-    // print(_whoami);
     setState(() {});
   }
 
   void getLocations() async {
     _locations = (await ApiService().getLocations())!;
-    // print(_locations);
     setState(() {});
   }
 
@@ -84,9 +82,6 @@ class _HomeState extends State<HomeAttendant> {
             IconButton(
               icon: const Image(image: AssetImage('assets/images/logout.png')),
               onPressed: () async {
-                // Navigate to the logout page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
                 await storage.delete(key: 'token');
                 Navigator.restorablePushNamed(context, Login.routeName);
               },

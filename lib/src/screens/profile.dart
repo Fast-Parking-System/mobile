@@ -1,5 +1,6 @@
 import 'package:fast_parking_system/src/models/whoami_model.dart';
 import 'package:fast_parking_system/src/screens/account.dart';
+import 'package:fast_parking_system/src/screens/change_password.dart';
 import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:fast_parking_system/src/screens/home_attendant.dart';
 import 'package:fast_parking_system/src/screens/login.dart';
@@ -34,7 +35,7 @@ class _HomeState extends State<Profile> {
 
   void getWhoAmI() async {
     _whoami = (await ApiService().getWhoAmI())!;
-    // print(_whoami);
+
     setState(() {});
   }
 
@@ -42,7 +43,7 @@ class _HomeState extends State<Profile> {
     setState(() {
       _selectedIndex = index;
     });
-    // print('isAdmin => $isAdmin');
+
     switch (index) {
       case 0:
         isAdmin == 'true'
@@ -84,9 +85,6 @@ class _HomeState extends State<Profile> {
             IconButton(
               icon: const Image(image: AssetImage('assets/images/logout.png')),
               onPressed: () async {
-                // Navigate to the logout page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
                 await storage.delete(key: 'token');
                 Navigator.restorablePushNamed(context, Login.routeName);
               },
@@ -144,13 +142,12 @@ class _HomeState extends State<Profile> {
                                   fontSize: 35,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
-                            ), //<------------
+                            ),
                             Container(
                               margin: const EdgeInsets.only(top: 10),
                               child: SizedBox(
                                 width: double.infinity,
                                 height: 5,
-                                // height: double.infinity,
                                 child: Container(
                                   color: Colors.black,
                                 ),
@@ -166,7 +163,7 @@ class _HomeState extends State<Profile> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
-                            ), //<------------
+                            ),
                             ListTile(
                                 leading: const CircleAvatar(child: Text('N')),
                                 title: const Text(
@@ -226,7 +223,34 @@ class _HomeState extends State<Profile> {
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         color: Colors.black),
-                                  ))
+                                  )),
+                            Container(
+                              margin: const EdgeInsets.only(top: 10.0),
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  fixedSize: const Size(200, 50),
+                                  padding: const EdgeInsets.all(10.0),
+                                  textStyle: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    side: const BorderSide(
+                                        color: Colors.white, width: 2),
+                                  ),
+                                  backgroundColor: const Color.fromRGBO(60, 95,
+                                      107, 1), // Set the background color
+                                ),
+                                onPressed: () async {
+                                  Navigator.restorablePushNamed(
+                                      context, ChangePasswordScreen.routeName);
+                                },
+                                child: Text(
+                                  'Change Password'.toUpperCase(),
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -236,147 +260,3 @@ class _HomeState extends State<Profile> {
               ));
   }
 }
-
-            // : Container(
-            //     width: double.infinity,
-            //     padding: const EdgeInsets.all(20),
-            //     color: const Color.fromRGBO(60, 95, 107, 1),
-            //     child: Container(
-            //       padding: const EdgeInsets.all(10),
-            //       decoration: const BoxDecoration(
-            //           color: Color.fromRGBO(217, 217, 217, 1),
-            //           borderRadius: BorderRadius.all(Radius.circular(20))),
-            //       child: SingleChildScrollView(
-            //           child: Column(
-            //         children: [
-            //           const Image(
-            //               image: AssetImage('assets/images/avatar.png')),
-            //           Text(
-            //             "Hi ${_whoami!.data.fullName} !",
-            //             style: const TextStyle(
-            //                 fontSize: 50,
-            //                 fontWeight: FontWeight.w500,
-            //                 color: Colors.black),
-            //           ), //<------------
-            //           SizedBox(
-            //             width: double.infinity,
-            //             height: 5,
-            //             // height: double.infinity,
-            //             child: Container(
-            //               color: Colors.black,
-            //             ),
-            //           ),
-            //           const Text(
-            //             "Info Profile",
-            //             style: TextStyle(
-            //                 fontSize: 30,
-            //                 fontWeight: FontWeight.w500,
-            //                 color: Colors.black),
-            //           ), //<------------
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.start,
-            //             textDirection: TextDirection.ltr,
-            //             children: [
-            //               Container(
-            //                 width: 50.0,
-            //                 height: 50.0,
-            //                 margin:
-            //                     const EdgeInsets.only(left: 10.0, right: 30.0),
-            //                 decoration: const BoxDecoration(
-            //                     // color: Color.fromRGBO(131, 130, 130, 1),
-            //                     color: Color(0xff93A0AE),
-            //                     borderRadius:
-            //                         BorderRadius.all(Radius.circular(10))),
-            //               ),
-            //               Column(children: [
-            //                 const Text(
-            //                   "Nama",
-            //                   textAlign: TextAlign.left,
-            //                   style: TextStyle(
-            //                       fontSize: 30,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black),
-            //                 ), //<------------
-            //                 Text(
-            //                   _whoami!.data.fullName,
-            //                   style: const TextStyle(
-            //                       fontSize: 30,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black),
-            //                 ), //<------------
-            //               ])
-            //             ],
-            //           ),
-            //           const SizedBox(height: 30),
-            //           Row(
-            //             children: [
-            //               Container(
-            //                 width: 50.0,
-            //                 height: 50.0,
-            //                 margin:
-            //                     const EdgeInsets.only(left: 10.0, right: 30.0),
-            //                 decoration: const BoxDecoration(
-            //                     // color: Color.fromRGBO(131, 130, 130, 1),
-            //                     color: Color(0xff93A0AE),
-            //                     borderRadius:
-            //                         BorderRadius.all(Radius.circular(10))),
-            //               ),
-            //               Column(children: [
-            //                 const Text(
-            //                   "User ID",
-            //                   textAlign: TextAlign.left,
-            //                   style: TextStyle(
-            //                       fontSize: 30,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black),
-            //                 ), //<------------
-            //                 Text(
-            //                   _whoami!.data.id,
-            //                   textAlign: TextAlign.left,
-            //                   style: const TextStyle(
-            //                       fontSize: 30,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black),
-            //                 ), //<------------
-            //               ])
-            //             ],
-            //           ),
-            //           const SizedBox(height: 30),
-            //           Row(
-            //             children: [
-            //               Container(
-            //                 width: 50.0,
-            //                 height: 50.0,
-            //                 margin:
-            //                     const EdgeInsets.only(left: 10.0, right: 30.0),
-            //                 decoration: const BoxDecoration(
-            //                     // color: Color.fromRGBO(131, 130, 130, 1),
-            //                     color: Color(0xff93A0AE),
-            //                     borderRadius:
-            //                         BorderRadius.all(Radius.circular(10))),
-            //               ),
-            //               Column(children: [
-            //                 const Text(
-            //                   "Jenis Kelamin",
-            //                   textAlign: TextAlign.left,
-            //                   style: TextStyle(
-            //                       fontSize: 30,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black),
-            //                 ), //<------------
-            //                 Text(
-            //                   _whoami!.data.gender,
-            //                   textAlign: TextAlign.left,
-            //                   style: const TextStyle(
-            //                       fontSize: 30,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black),
-            //                 ), //<------------
-            //               ])
-            //             ],
-            //           )
-            //         ],
-            //       )),
-            //     ),
-            //   ));
-//   }

@@ -31,7 +31,6 @@ class _HomeState extends State<Home> {
 
   void getLocations() async {
     _locations = (await ApiService().getLocations())!;
-    // print(_locations);
     setState(() {});
   }
 

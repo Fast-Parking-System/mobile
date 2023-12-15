@@ -1,57 +1,42 @@
-import 'dart:convert';
-import 'package:fast_parking_system/src/screens/home_attendant.dart';
+import 'package:fast_parking_system/src/models/change_password_model.dart';
+import 'package:fast_parking_system/src/screens/profile.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'package:fast_parking_system/src/constants.dart';
-import 'package:fast_parking_system/src/screens/home.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:fast_parking_system/src/services/api_service.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/login';
+  static const routeName = '/change-password';
 
   @override
-  _LoginState createState() => _LoginState();
+  _ChangePasswordState createState() => _ChangePasswordState();
 }
 
-class _LoginState extends State<Login> {
-  TextEditingController userIdController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _ChangePasswordState extends State<ChangePasswordScreen> {
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmNewPasswordController = TextEditingController();
+  late ChangePassword? _changePasswordResponse = null;
 
   final storage = const FlutterSecureStorage();
 
-  Future<void> sendLoginRequest() async {
-    var url = Uri.parse(ApiConstants.url + ApiConstants.login);
-    var response = await http.post(url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "user_id": userIdController.text,
-          "password": passwordController.text,
-        }));
+  Future<void> sendChangePasswordRequest() async {
+    _changePasswordResponse = await ApiService().sendChangePasswordRequest(
+      oldPassword: oldPasswordController.text,
+      newPassword: newPasswordController.text,
+      confirmNewPassword: confirmNewPasswordController.text,
+    );
 
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body.toString());
-
-      await storage.write(key: 'token', value: data['data']['token']);
-
-      bool isAdmin = data['data']['is_admin'];
-      await storage.write(key: 'isAdmin', value: isAdmin.toString());
-
-      int userId = data['data']['user_id'];
-      await storage.write(key: 'userId', value: userId.toString());
-
+    if (_changePasswordResponse != null &&
+        _changePasswordResponse!.data.isUpdated) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Login Success!"),
+        content: Text("Change Password Success!"),
       ));
-      if (isAdmin)
-        Navigator.restorablePushNamed(context, Home.routeName);
-      else
-        Navigator.restorablePushNamed(context, HomeAttendant.routeName);
+      Navigator.restorablePushNamed(context, Profile.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Login Failed"),
+        content: Text("Change Password Failed"),
       ));
     }
   }
@@ -82,13 +67,13 @@ class _LoginState extends State<Login> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 20.0),
                   child: TextFormField(
-                    controller: userIdController,
+                    controller: oldPasswordController,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.person_outline_outlined),
                         prefixIconColor: Colors.white,
                         fillColor: Colors.white,
-                        labelText: 'USER ID',
+                        labelText: 'Old Password',
                         labelStyle: TextStyle(color: Colors.white),
                         enabledBorder: OutlineInputBorder(
                             borderSide:
@@ -98,19 +83,35 @@ class _LoginState extends State<Login> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 20.0),
                   child: TextFormField(
-                    controller: passwordController,
+                    controller: newPasswordController,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.fingerprint),
                         prefixIconColor: Colors.white,
                         fillColor: Colors.white,
-                        labelText: 'PASSWORD',
+                        labelText: 'New Password',
                         labelStyle: TextStyle(color: Colors.white),
                         enabledBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.white, width: 2))),
                   ),
                 ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20.0),
+                  child: TextFormField(
+                    controller: confirmNewPasswordController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.fingerprint),
+                        prefixIconColor: Colors.white,
+                        fillColor: Colors.white,
+                        labelText: 'Confirm New Password',
+                        labelStyle: TextStyle(color: Colors.white),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 2))),
+                  ),
+                )
               ],
             ),
           )),
@@ -124,9 +125,9 @@ class _LoginState extends State<Login> {
                           fontSize: 15, fontWeight: FontWeight.bold),
                       shape: const StadiumBorder(),
                       side: const BorderSide(color: Colors.white, width: 2)),
-                  onPressed: sendLoginRequest,
+                  onPressed: sendChangePasswordRequest,
                   child: Text(
-                    'login'.toUpperCase(),
+                    'Change Password'.toUpperCase(),
                     style: const TextStyle(color: Colors.white),
                   )))
         ])));

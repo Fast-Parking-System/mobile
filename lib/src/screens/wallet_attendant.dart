@@ -33,7 +33,7 @@ class _HomeState extends State<WalletAttendant> {
 
   void getWhoAmI() async {
     _whoami = (await ApiService().getWhoAmI())!;
-    // print(_whoami);
+    
     setState(() {});
   }
 
@@ -81,9 +81,9 @@ class _HomeState extends State<WalletAttendant> {
             IconButton(
               icon: const Image(image: AssetImage('assets/images/logout.png')),
               onPressed: () async {
-                // Navigate to the logout page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
+                
+                
+                
                 await storage.delete(key: 'token');
                 Navigator.restorablePushNamed(context, Login.routeName);
               },
@@ -128,7 +128,7 @@ class _HomeState extends State<WalletAttendant> {
                       controller: ScrollController(),
                       child: Column(
                         children: [
-                          // Daily Analytics
+                          
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -258,7 +258,7 @@ class _HomeState extends State<WalletAttendant> {
                                     ]),
                             ],
                           ),
-                          // Weekly Analytics
+                          
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -270,7 +270,7 @@ class _HomeState extends State<WalletAttendant> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors
-                                        .black, // Adjust title text color as needed
+                                        .black, 
                                   ),
                                 ),
                               ),
@@ -431,7 +431,7 @@ class _HomeState extends State<WalletAttendant> {
                                     ]),
                             ],
                           ),
-                          // Monthly Analytics
+                          
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -443,7 +443,7 @@ class _HomeState extends State<WalletAttendant> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors
-                                        .black, // Adjust title text color as needed
+                                        .black, 
                                   ),
                                 ),
                               ),
@@ -562,7 +562,7 @@ class _HomeState extends State<WalletAttendant> {
                                     ]),
                             ],
                           ),
-                          // Yearly Analytics
+                          
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -574,7 +574,7 @@ class _HomeState extends State<WalletAttendant> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors
-                                        .black, // Adjust title text color as needed
+                                        .black, 
                                   ),
                                 ),
                               ),
