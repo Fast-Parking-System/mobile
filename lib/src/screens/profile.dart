@@ -25,12 +25,17 @@ class _HomeState extends State<Profile> {
   late WhoAmI? _whoami = null;
   final storage = const FlutterSecureStorage();
   int _selectedIndex = 3;
-  String isAdmin = 'false';
+  String? isAdmin = 'false';
 
   @override
   void initState() {
     super.initState();
+    getIsAdmin();
     getWhoAmI();
+  }
+
+  getIsAdmin() async {
+    isAdmin = await storage.read(key: 'isAdmin');
   }
 
   void getWhoAmI() async {
