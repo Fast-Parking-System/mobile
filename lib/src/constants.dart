@@ -1,6 +1,6 @@
 class ApiConstants {
   static String baseUrl = 'https://pokeapi.co/api/v2';
-  static String url = 'https://fast-parking-dev-api.up.railway.app';
+  static String url = 'https://fast-parking-backend.up.railway.app';
   static String login = '/api/login';
   static String changePassword = '/api/change-password';
   static String register = '/api/register';
