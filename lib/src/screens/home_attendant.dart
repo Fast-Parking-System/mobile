@@ -134,7 +134,7 @@ class _HomeState extends State<HomeAttendant> {
                               fontWeight: FontWeight.w500),
                         ),
                       ), //<------------
-                      Image.asset('assets/images/telukk.png'),
+                      Image.asset('assets/images/peta.jpg'),
                       Container(
                         alignment: Alignment.center,
                         margin: const EdgeInsets.only(top: 50.0),
